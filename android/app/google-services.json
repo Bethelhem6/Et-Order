@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1069056623178",
+    "project_id": "etherbal-6a447",
+    "storage_bucket": "etherbal-6a447.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069056623178:android:90642f9a2d98e3eeb65cb3",
+        "android_client_info": {
+          "package_name": "com.bettyyordi.demo_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069056623178-44ou8vb90rvvc5gbkb5330f5jvfgdfcv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRgvvi-AJWdl_b2lS62WcrP5U-Is_uSGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069056623178-44ou8vb90rvvc5gbkb5330f5jvfgdfcv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
