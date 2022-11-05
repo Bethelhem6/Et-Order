@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:demo_project/auth/auth_screen.dart';
 import 'package:demo_project/screens/pages/login/login_page.dart';
 import 'package:demo_project/screens/pages/signup/signup_page.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +48,25 @@ class _LandingScreenState extends State<WelcomeScreen>
   // }
 
   @override
+  void initState() {
+    super.initState();
+    startTime();
+  }
+
+  startTime() async {
+    var duration = const Duration(seconds: 4);
+    return Timer(duration, route);
+  }
+
+  route() {
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>  AuthStateScreen(),
+        ));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -83,43 +105,43 @@ class _LandingScreenState extends State<WelcomeScreen>
               ),
             ],
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Row(
-                children: [
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Login()));
-                      },
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(fontSize: 25, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Signup()));
-                      },
-                      child: const Text(
-                        'Signup',
-                        style: TextStyle(fontSize: 25, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                ],
-              ),
-              const SizedBox(height: 100),
-            ],
-          ),
+          // Column(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     Row(
+          //       children: [
+          //         const SizedBox(width: 10),
+          //         Expanded(
+          //           child: ElevatedButton(
+          //             onPressed: () {
+          //               Navigator.push(context,
+          //                   MaterialPageRoute(builder: (context) => Login()));
+          //             },
+          //             child: const Text(
+          //               'Login',
+          //               style: TextStyle(fontSize: 25, color: Colors.white),
+          //             ),
+          //           ),
+          //         ),
+          //         const SizedBox(width: 10),
+          //         Expanded(
+          //           child: ElevatedButton(
+          //             onPressed: () {
+          //               Navigator.push(context,
+          //                   MaterialPageRoute(builder: (context) => Signup()));
+          //             },
+          //             child: const Text(
+          //               'Signup',
+          //               style: TextStyle(fontSize: 25, color: Colors.white),
+          //             ),
+          //           ),
+          //         ),
+          //         const SizedBox(width: 10),
+          //       ],
+          //     ),
+          //     const SizedBox(height: 100),
+          //   ],
+          // ),
         ],
       ),
     );

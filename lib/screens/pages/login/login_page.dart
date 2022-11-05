@@ -66,14 +66,16 @@ class _Login extends State<Login> {
               MaterialPageRoute(builder: (context) => ProductMainPage()),
             );
           } else {
-            _globalMethods.showDialogues(
-                context, 'It is not customer account.');
+            if (mounted) {
+              _globalMethods.showDialogues(
+                  context, 'It is not customer account.');
+            }
           }
         }
         print("logged in");
       } catch (e) {
         if (mounted) {
-          setState(() => _globalMethods.showDialogues(context, e.toString()));
+          _globalMethods.showDialogues(context, e.toString());
         }
       } finally {
         if (mounted) {
