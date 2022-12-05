@@ -1,8 +1,9 @@
-import 'package:demo_project/screens/home/front_page/front_first_page.dart';
-import 'package:demo_project/screens/pages/login/login_page.dart';
-import 'package:demo_project/screens/welcome_screen.dart';
+import 'package:demo_project/screens/home/main_page.dart';
+import 'package:demo_project/screens/login/login_page.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 
 class AuthStateScreen extends StatelessWidget {
   const AuthStateScreen({Key? key}) : super(key: key);
@@ -16,14 +17,14 @@ class AuthStateScreen extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.hasData) {
-            return const ProductMainPage();
+            return const MainPage();
           } else {
-            return Login();
+            return const Login();
           }
         } else if (snapshot.hasError) {
           return const Text('Error Occured');
         }
-        return const ProductMainPage();
+        return const MainPage();
       },
     );
   }

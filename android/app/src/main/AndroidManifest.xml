@@ -4,6 +4,8 @@
         android:label="BJ Etherbal"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.AIzaSyCpzBtCXdl3Tl2WrlMW0raHm1WEp9dKTO0"
+        android:value="AIzaSyCpzBtCXdl3Tl2WrlMW0raHm1WEp9dKTO0"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -20,6 +22,7 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+       
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

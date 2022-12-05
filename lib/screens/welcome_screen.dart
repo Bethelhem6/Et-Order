@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:demo_project/auth/auth_screen.dart';
-import 'package:demo_project/screens/pages/login/login_page.dart';
-import 'package:demo_project/screens/pages/signup/signup_page.dart';
+import 'package:demo_project/screens/delivery_information/address_page.dart';
+
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatefulWidget {
