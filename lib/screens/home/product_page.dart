@@ -1,10 +1,11 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print, prefer_typing_uninitialized_variables
+// ignore_for_file: use_build_context_synchronously, avoid_print,
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project/util/column.dart';
 import 'package:demo_project/util/icons.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/cart_and _provider.dart';
@@ -23,7 +24,6 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   var _currentPage = 0.0;
-  late var box;
 
   PageController pageController = PageController(viewportFraction: 0.85);
 
@@ -41,16 +41,15 @@ class _ProductPageState extends State<ProductPage> {
   @override
   void dispose() {
     pageController.dispose();
-    // dispose();
     super.dispose();
   }
 
- 
   int quantity = 0;
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
     final whishlistProvider = Provider.of<WhishlistProvider>(context);
+    var box = Hive.box<Whishlist>("wishlist_products");
 
     return Column(
       children: [
@@ -147,46 +146,49 @@ class _ProductPageState extends State<ProductPage> {
                                           Row(
                                             children: [
                                               GestureDetector(
-                                                  onTap: () async {
-                                                    whishlistProvider
-                                                        .addOrRemoveWish(
-                                                            snapshot.data!.docs[
-                                                                index]['id'],
-                                                            snapshot.data!.docs[
-                                                                index]['title'],
-                                                            snapshot.data!
-                                                                    .docs[index]
-                                                                ['image'],
-                                                            double.parse(snapshot
-                                                                    .data!
-                                                                    .docs[index]
-                                                                ['price']));
-                                                  },
-                                                  child: whishlistProvider
-                                                          .whishlist
-                                                          .containsKey(snapshot
+                                                onTap: () async {
+                                                  whishlistProvider
+                                                      .addOrRemoveWish(
+                                                          snapshot
+                                                                  .data!.docs[
+                                                              index]['id'],
+                                                          snapshot
+                                                                  .data!.docs[
+                                                              index]['title'],
+                                                          snapshot
+                                                                  .data!.docs[
+                                                              index]['image'],
+                                                          double.parse(snapshot
                                                                   .data!
                                                                   .docs[index]
-                                                              ['title'])
-                                                      ? AppIcon(
-                                                          icon: Icons.favorite,
-                                                          backgroundColor:
-                                                              Colors.white,
-                                                          iconColor: Colors
-                                                              .red.shade600,
-                                                          iconSize: 20,
-                                                          size: 30,
-                                                        )
-                                                      : AppIcon(
-                                                          icon: Icons
-                                                              .favorite_outline,
-                                                          backgroundColor:
-                                                              Colors.white,
-                                                          iconColor: Colors
-                                                              .red.shade600,
-                                                          iconSize: 20,
-                                                          size: 30,
-                                                        )),
+                                                              ['price']));
+                                                },
+                                                child: whishlistProvider
+                                                        .whishlist
+                                                        .containsKey(snapshot
+                                                                .data!
+                                                                .docs[index]
+                                                            ['title'])
+                                                    ? AppIcon(
+                                                        icon: Icons.favorite,
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        iconColor:
+                                                            Colors.red.shade600,
+                                                        iconSize: 20,
+                                                        size: 30,
+                                                      )
+                                                    : AppIcon(
+                                                        icon: Icons
+                                                            .favorite_outline,
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        iconColor:
+                                                            Colors.red.shade600,
+                                                        iconSize: 20,
+                                                        size: 30,
+                                                      ),
+                                              ),
                                               GestureDetector(
                                                 onTap: () {
                                                   if (cartProvider.cartList

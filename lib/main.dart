@@ -1,18 +1,20 @@
 import 'package:demo_project/auth/auth_screen.dart';
 import 'package:demo_project/provider/cart_and%20_provider.dart';
 import 'package:demo_project/provider/whishlist_provider.dart';
-import 'package:demo_project/screens/product_review/review.dart';
+import 'package:demo_project/wishlist/wishlist_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await Hive.initFlutter();
-  await Hive.openBox('wishlist_products');
+  Hive.registerAdapter(WhishlistAdapter());
+  await Hive.openBox<Whishlist>('wishlist_products');
+  
+  // await Hive.deleteFromDisk();
 
   runApp(const MyApp());
 }

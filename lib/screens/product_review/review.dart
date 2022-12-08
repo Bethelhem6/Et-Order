@@ -1,10 +1,13 @@
-// ignore_for_file: avoid_print
-
 import 'dart:io';
 
-import 'package:demo_project/util/icons.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo_project/screens/product_review/review_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'package:demo_project/util/icons.dart';
 
 class ProductReview extends StatefulWidget {
   const ProductReview({Key? key}) : super(key: key);
@@ -16,33 +19,67 @@ class ProductReview extends StatefulWidget {
 TextEditingController textarea = TextEditingController();
 
 class _ProductReviewState extends State<ProductReview> {
+  String _url = "";
+  String _uid = "";
+  String _name = '';
+  bool isLoaded = false;
+  double star = 0;
+  double initialStar = 2.5;
+
+  String id = DateTime.now().toString();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  List selected = [false, false, false, false, false];
+
   File? _image;
 
-  Future _getImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      setState(() {
-        _image = File(image!.path);
-        print(_image);
-      });
-    } catch (e) {
-      print(e);
-    }
+  // Future _getImage() async {
+  //   try {
+  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  //     setState(() {
+  //       _image = File(image!.path);
+  //       print(_image);
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
+  void _getData() async {
+    User? user = _auth.currentUser;
+    _uid = user!.uid;
+
+    final DocumentSnapshot userDocs =
+        await FirebaseFirestore.instance.collection("users").doc(_uid).get();
+    setState(() {
+      _url = userDocs.get("imageUrl");
+      _name = userDocs.get("name");
+    });
+  }
+
+  void sendReview(double star, String review, File? image, var date) async {
+    await FirebaseFirestore.instance.collection("reviews").doc(id).set({
+      "name": _name,
+      "stars": star,
+      "image": _url,
+      "reviewDate": date,
+      "review": review,
+      "picAdded": image,
+    });
+  }
+
+  @override
+  void initState() {
+    _getData();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const AppIcon(
-          icon: Icons.arrow_back_ios,
-          backgroundColor: Colors.green,
-          iconColor: Colors.white,
-          iconSize: 25,
-          // size: ,
-        ),
         title: const Text(
-          "Rating & Reviews",
+          "⭐Rating & Reviews⭐",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 23,
@@ -76,7 +113,14 @@ class _ProductReviewState extends State<ProductReview> {
   }
 
   bottomSheet(BuildContext context) async {
+    // var reviewProvider = Provider.of<ReviewProvider>(context, listen: false);
+    var date = DateTime.now().toString();
+    var parsedDate = DateTime.parse(date);
+    var formattedDate =
+        '${parsedDate.day}/${parsedDate.month}/${parsedDate.year}';
+
     showModalBottomSheet<dynamic>(
+        elevation: 5,
         backgroundColor: Colors.green.shade50,
         isScrollControlled: true,
         context: context,
@@ -104,19 +148,23 @@ class _ProductReviewState extends State<ProductReview> {
                   const SizedBox(
                     height: 15,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      5,
-                      (index) {
-                        return const AppIcon(
-                          icon: Icons.star_outline,
-                          backgroundColor: Colors.white,
-                          iconColor: Colors.grey,
-                          iconSize: 40,
-                        );
-                      },
+                  RatingBar.builder(
+                    initialRating: initialStar,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    itemBuilder: (context, _) => const Icon(
+                      Icons.star,
+                      color: Colors.amber,
                     ),
+                    onRatingUpdate: (rating) {
+                      setState(() {
+                        star = rating;
+                      });
+                    },
+                    updateOnDrag: true,
                   ),
                   const Padding(
                     padding: EdgeInsets.only(top: 15.0, left: 20, right: 20),
@@ -145,44 +193,46 @@ class _ProductReviewState extends State<ProductReview> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 35),
+                        vertical: 15.0, horizontal: 35),
                     child: TextField(
                       controller: textarea,
                       keyboardType: TextInputType.multiline,
-                      maxLines: 10,
-                      decoration: const InputDecoration(
-                      
+                      maxLines: 7,
+                      onEditingComplete: () {
+                        FocusScope.of(context).unfocus();
+                      },
+                      decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
                         hintText: "Your review",
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           color: Colors.grey,
                           fontSize: 17,
                         ),
-                        // enabledBorder: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide:
+                              const BorderSide(color: Colors.green, width: 0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: const BorderSide(color: Colors.green)),
                       ),
                     ),
                   ),
                   Row(
-                    // scrollDirection: Axis.horizontal,
                     children: [
                       Padding(
-                          padding: const EdgeInsets.only(left: 20.0, right: 10),
-                          child: Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              border: Border.all(width: 2, color: Colors.grey),
-                            ),
-                            child: _image == null
-                                ? Text("null")
-                                : Image.file(
-                                    _image!,
-                                    fit: BoxFit.cover,
-                                  ),
-                          ),
+                        padding: const EdgeInsets.only(left: 20.0, right: 10),
+                        child: Container(
+                          decoration: const BoxDecoration(),
+                          child: _image == null
+                              ? null
+                              : Image.file(
+                                  _image!,
+                                  fit: BoxFit.cover,
+                                ),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(15.0),
@@ -199,42 +249,63 @@ class _ProductReviewState extends State<ProductReview> {
                               print(e);
                             }
                           },
-                          child: const AppIcon(
-                            icon: Icons.camera_enhance,
-                            backgroundColor: Colors.green,
-                            iconColor: Colors.white,
-                            iconSize: 30,
-                            size: 60,
+                          child: Column(
+                            children: const [
+                              AppIcon(
+                                icon: Icons.camera_enhance,
+                                backgroundColor: Colors.green,
+                                iconColor: Colors.white,
+                                iconSize: 30,
+                                size: 60,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "Add photos",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      const Text(
-                        "Add photos",
-                        // ignore: unnecessary_const
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold),
-                      ),
                     ],
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: Text(
-                        "SEND REVIEW",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
+                  GestureDetector(
+                    onTap: () {
+                      sendReview(star, textarea.text,
+                          _image == null ? null : _image!, formattedDate);
+
+                      textarea.clear();
+
+                      _image = null;
+
+                      Navigator.pop(context);
+                      showBox(context);
+
+                      print("done");
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width,
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Text(
+                          "SEND REVIEW",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
@@ -245,114 +316,39 @@ class _ProductReviewState extends State<ProductReview> {
           );
         });
   }
-}
 
-class ReviewsWidget extends StatelessWidget {
-  const ReviewsWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      child: ListView.builder(
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return Stack(
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 25.0, vertical: 5),
-                  child: Card(
-                    elevation: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        const Padding(
-                          padding:
-                              EdgeInsets.only(top: 20, left: 20, bottom: 10),
-                          child: Text(
-                            "Helen Hiwot",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              // width: 10,
-                              padding:
-                                  const EdgeInsets.only(left: 20, bottom: 10),
-                              child: Row(
-                                children: List.generate(4, (index) {
-                                  return const Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                  );
-                                }),
-                              ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.only(bottom: 10),
-                              child: Icon(
-                                Icons.star_outline,
-                                color: Colors.amber,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 50,
-                            ),
-                            Container(
-                                alignment: Alignment.centerRight,
-                                padding: const EdgeInsets.only(
-                                    bottom: 10, right: 10),
-                                child: const Text(
-                                  "Aug 13, 2022",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.grey,
-                                  ),
-                                ))
-                          ],
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 20,
-                            bottom: 10,
-                            right: 20,
-                          ),
-                          child: Text(
-                            "lorem First thing came to my mind was SVG files and VectorDrawables I am used to in Android, sadly Flutter doesn’t support this kind of SVG Animation just yet, flutter_svg package gave some hope but It was of no use as it is not possible to animate this expressions with it, I had to dig deeper and then I found this CustomPainter class, It gives us kind of total control over what is shown on screen(as widget), and I was like hale luya that is what we need :)",
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+  Future<dynamic> showBox(BuildContext context) async {
+    return await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text(
+                "Thank you!", // ignore: unnecessary_const
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+              content: const Image(
+                image: AssetImage(
+                  "assets/star.png",
                 ),
-                const Positioned(
-                    child: Padding(
-                  padding: EdgeInsets.only(
-                    left: 8.0,
-                    top: 5,
+                height: 70,
+                width: 70,
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    "Okay.", // ignore: unnecessary_const
+                    style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
                   ),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.green,
-                    radius: 20,
-                    child: Text("H"),
-                  ),
-                ))
+                )
               ],
-            );
-          }),
-    );
+            ));
   }
 }

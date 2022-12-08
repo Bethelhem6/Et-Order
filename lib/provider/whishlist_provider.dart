@@ -1,9 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-// ignore_for_file: prefer_final_fields
 import 'package:hive/hive.dart';
 
 import 'package:flutter/cupertino.dart';
-
+part 'whishlist_provider.g.dart';
 
 @HiveType(typeId: 1)
 class Whishlist extends HiveObject {
@@ -43,14 +41,14 @@ class Whishlist extends HiveObject {
 class WhishlistProvider with ChangeNotifier {
   Map<String, Whishlist> _whishlist = {};
   Map<String, Whishlist> get whishlist => _whishlist;
+  var box = Hive.box<Whishlist>("wishlist_products");
 
   void addOrRemoveWish(String title, String id, String image, double price) {
+    bool inBox = false;
     if (_whishlist.containsKey(id)) {
       removeItem(id);
-      // print(id);
+      box.delete(title);
     } else {
-      // print(id);
-
       _whishlist.putIfAbsent(
         id,
         () => Whishlist(
@@ -59,18 +57,26 @@ class WhishlistProvider with ChangeNotifier {
           title: title,
           price: price,
         ),
+
+       
       );
+      box.put(
+          title, Whishlist(image: image, title: title, price: price, id: id));
+      print(title);
     }
     notifyListeners();
   }
 
   void removeItem(String id) {
     _whishlist.remove(id);
+    box.delete(id);
+    print(box.get(id));
     notifyListeners();
   }
 
   void clearWish() {
     _whishlist.clear();
+    box.deleteAll(box.keys);
     notifyListeners();
   }
 }

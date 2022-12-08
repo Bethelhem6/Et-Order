@@ -17,7 +17,7 @@ class _MainPageState extends State<MainPage> {
     return [const HomeHeader(), const Cart(), const UserScreen()];
   }
 
-  // ignore: non_constant_identifier_names
+
   List<PersistentBottomNavBarItem> NavBarItems() {
     return [
       PersistentBottomNavBarItem(
