@@ -5,6 +5,7 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import '../cart/cart_page.dart';
 import '../user_profile/user_profile.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -17,7 +18,7 @@ class _MainPageState extends State<MainPage> {
     return [const HomeHeader(), const Cart(), const UserScreen()];
   }
 
-
+  // ignore: non_constant_identifier_names
   List<PersistentBottomNavBarItem> NavBarItems() {
     return [
       PersistentBottomNavBarItem(
@@ -41,14 +42,12 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-   
       body: PersistentTabView(
         context,
         items: NavBarItems(),
         screens: _screens(),
         navBarStyle: NavBarStyle.style1,
       ),
-      
     );
   }
 }
