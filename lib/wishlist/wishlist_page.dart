@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../provider/cart_and _provider.dart';
 import '../screens/home/home_header.dart';
+import '../util/icons.dart';
 
 class WhishlistPage extends StatefulWidget {
   const WhishlistPage({Key? key}) : super(key: key);
@@ -24,6 +26,7 @@ class _WhishlistPage extends State<WhishlistPage> {
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
     final whishlistProvider = Provider.of<WhishlistProvider>(context);
     var box = Hive.box<Whishlist>("wishlist_products");
 
@@ -146,9 +149,69 @@ class _WhishlistPage extends State<WhishlistPage> {
                             image: NetworkImage(wishlist[index].image),
                             width: 100,
                           ),
-                          title: Text(wishlist[index].id),
-                          subtitle: Text(
-                            "Birr ${wishlist[index].price.toString()}",
+                          title: Text(
+                            wishlist[index].id,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          subtitle: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Birr ${wishlist[index].price.toString()}",
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  if (cartProvider.cartList
+                                      .containsKey(wishlist[index].id)) {
+                                    cartProvider.removeItem(wishlist[index].id);
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      duration: const Duration(
+                                        milliseconds: 700,
+                                      ),
+                                      backgroundColor: Colors.black26,
+                                      content: Text(
+                                        "${wishlist[index].id} removed form cart ",
+                                      ),
+                                    ));
+                                  } else {
+                                    cartProvider.addToCart(
+                                        wishlist[index].title,
+                                        wishlist[index].id,
+                                        wishlist[index].image,
+                                        wishlist[index].price);
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      duration: const Duration(
+                                        milliseconds: 700,
+                                      ),
+                                      backgroundColor: Colors.black26,
+                                      content: Text(
+                                        "${wishlist[index].id} added to cart ",
+                                      ),
+                                    ));
+                                  }
+                                },
+                                child: cartProvider.cartList
+                                        .containsKey(wishlist[index].id)
+                                    ? const AppIcon(
+                                        icon: Icons.shopping_cart,
+                                        backgroundColor: Colors.white,
+                                        iconColor: Colors.green,
+                                        iconSize: 20,
+                                        size: 35,
+                                      )
+                                    : const AppIcon(
+                                        icon: Icons.shopping_cart_outlined,
+                                        backgroundColor: Colors.white,
+                                        iconColor: Colors.green,
+                                        iconSize: 20,
+                                        size: 35,
+                                      ),
+                              ),
+                            ],
                           ),
                           trailing: IconButton(
                             onPressed: () {
