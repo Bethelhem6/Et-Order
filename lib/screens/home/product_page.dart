@@ -99,10 +99,10 @@ class _ProductPageState extends State<ProductPage> {
                             Align(
                               alignment: Alignment.bottomCenter,
                               child: Container(
-                                height: 120,
+                                height: 100,
                                 width: 240,
                                 margin: const EdgeInsets.only(
-                                    left: 20, right: 20, bottom: 20),
+                                    left: 20, right: 20, bottom: 40),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(25),
                                     color: Colors.white,
@@ -129,159 +129,118 @@ class _ProductPageState extends State<ProductPage> {
                                         text: snapshot.data!.docs[index]
                                             ['title'],
                                       ),
+                                      Text(
+                                        " Birr ${snapshot.data!.docs[index]['price']}",
+                                        style: TextStyle(
+                                          color: Colors.green[200],
+                                          fontSize: 20,
+                                        ),
+                                      ),
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.end,
                                         children: [
-                                          Text(
-                                            " Birr ${snapshot.data!.docs[index]['price']}",
-                                            style: TextStyle(
-                                              color: Colors.green[200],
-                                              fontSize: 20,
-                                            ),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              whishlistProvider.addOrRemoveWish(
+                                                  snapshot.data!.docs[index]
+                                                      ['id'],
+                                                  snapshot.data!.docs[index]
+                                                      ['title'],
+                                                  snapshot.data!.docs[index]
+                                                      ['image'],
+                                                  double.parse(snapshot.data!
+                                                      .docs[index]['price']));
+                                            },
+                                            child: whishlistProvider.whishlist
+                                                    .containsKey(snapshot.data!
+                                                        .docs[index]['title'])
+                                                ? AppIcon(
+                                                    icon: Icons.favorite,
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    iconColor:
+                                                        Colors.red.shade600,
+                                                    iconSize: 20,
+                                                    size: 30,
+                                                  )
+                                                : AppIcon(
+                                                    icon:
+                                                        Icons.favorite_outline,
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    iconColor:
+                                                        Colors.red.shade600,
+                                                    iconSize: 20,
+                                                    size: 30,
+                                                  ),
                                           ),
-                                          // const SizedBox(
-                                          //   width: 50,
-                                          // ),
-                                          Row(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () async {
-                                                  whishlistProvider
-                                                      .addOrRemoveWish(
-                                                          snapshot
-                                                                  .data!.docs[
-                                                              index]['id'],
-                                                          snapshot
-                                                                  .data!.docs[
-                                                              index]['title'],
-                                                          snapshot
-                                                                  .data!.docs[
-                                                              index]['image'],
-                                                          double.parse(snapshot
-                                                                  .data!
-                                                                  .docs[index]
-                                                              ['price']));
-                                                },
-                                                child: whishlistProvider
-                                                        .whishlist
-                                                        .containsKey(snapshot
-                                                                .data!
-                                                                .docs[index]
-                                                            ['title'])
-                                                    ? AppIcon(
-                                                        icon: Icons.favorite,
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        iconColor:
-                                                            Colors.red.shade600,
-                                                        iconSize: 20,
-                                                        size: 30,
-                                                      )
-                                                    : AppIcon(
-                                                        icon: Icons
-                                                            .favorite_outline,
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        iconColor:
-                                                            Colors.red.shade600,
-                                                        iconSize: 20,
-                                                        size: 30,
-                                                      ),
-                                              ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  if (cartProvider.cartList
-                                                      .containsKey(snapshot
-                                                              .data!.docs[index]
-                                                          ['title'])) {
-                                                    cartProvider.removeItem(
-                                                        snapshot.data!
-                                                                .docs[index]
-                                                            ['title']);
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(SnackBar(
-                                                      duration: const Duration(
-                                                        milliseconds: 700,
-                                                      ),
-                                                      backgroundColor:
-                                                          Colors.black26,
-                                                      content: Text(
-                                                        "${snapshot.data!.docs[index]['title']} removed form cart ",
-                                                      ),
-                                                    ));
-                                                  } else {
-                                                    cartProvider.addToCart(
-                                                      snapshot.data!.docs[index]
-                                                          ['id'],
-                                                      snapshot.data!.docs[index]
-                                                          ['title'],
-                                                      snapshot.data!.docs[index]
-                                                          ['image'],
-                                                      double.parse(snapshot
-                                                              .data!.docs[index]
-                                                          ['price']),
-                                                    );
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(SnackBar(
-                                                      duration: const Duration(
-                                                        milliseconds: 700,
-                                                      ),
-                                                      backgroundColor:
-                                                          Colors.black26,
-                                                      content: Text(
-                                                        "${snapshot.data!.docs[index]['title']} added to cart ",
-                                                      ),
-                                                    ));
-                                                  }
-                                                },
-                                                child: cartProvider.cartList
-                                                        .containsKey(snapshot
-                                                                .data!
-                                                                .docs[index]
-                                                            ['title'])
-                                                    ? AppIcon(
-                                                        icon:
-                                                            Icons.shopping_cart,
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        iconColor: Colors
-                                                            .blueGrey.shade600,
-                                                        iconSize: 20,
-                                                        size: 30,
-                                                      )
-                                                    : AppIcon(
-                                                        icon: Icons
-                                                            .shopping_cart_outlined,
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        iconColor: Colors
-                                                            .blueGrey.shade600,
-                                                        iconSize: 20,
-                                                        size: 30,
-                                                      ),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          for (int i = 0; i < 5; i++)
-                                            AppIcon(
-                                              icon: Icons.star,
-                                              backgroundColor: Colors.white,
-                                              iconColor: Colors.orange.shade300,
-                                              iconSize: 25,
-                                              size: 20,
-                                            ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              if (cartProvider.cartList
+                                                  .containsKey(snapshot.data!
+                                                      .docs[index]['title'])) {
+                                                cartProvider.removeItem(snapshot
+                                                    .data!
+                                                    .docs[index]['title']);
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(SnackBar(
+                                                  duration: const Duration(
+                                                    milliseconds: 700,
+                                                  ),
+                                                  backgroundColor:
+                                                      Colors.black26,
+                                                  content: Text(
+                                                    "${snapshot.data!.docs[index]['title']} removed form cart ",
+                                                  ),
+                                                ));
+                                              } else {
+                                                cartProvider.addToCart(
+                                                  snapshot.data!.docs[index]
+                                                      ['id'],
+                                                  snapshot.data!.docs[index]
+                                                      ['title'],
+                                                  snapshot.data!.docs[index]
+                                                      ['image'],
+                                                  double.parse(snapshot.data!
+                                                      .docs[index]['price']),
+                                                );
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(SnackBar(
+                                                  duration: const Duration(
+                                                    milliseconds: 700,
+                                                  ),
+                                                  backgroundColor:
+                                                      Colors.black26,
+                                                  content: Text(
+                                                    "${snapshot.data!.docs[index]['title']} added to cart ",
+                                                  ),
+                                                ));
+                                              }
+                                            },
+                                            child: cartProvider.cartList
+                                                    .containsKey(snapshot.data!
+                                                        .docs[index]['title'])
+                                                ? AppIcon(
+                                                    icon: Icons.shopping_cart,
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    iconColor: Colors
+                                                        .blueGrey.shade600,
+                                                    iconSize: 20,
+                                                    size: 30,
+                                                  )
+                                                : AppIcon(
+                                                    icon: Icons
+                                                        .shopping_cart_outlined,
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    iconColor: Colors
+                                                        .blueGrey.shade600,
+                                                    iconSize: 20,
+                                                    size: 30,
+                                                  ),
+                                          ),
                                         ],
                                       )
                                     ],

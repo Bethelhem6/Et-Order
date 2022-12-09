@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_const, prefer_final_fields, unused_field
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo_project/screens/my_orders/my_orders_screen.dart';
 import 'package:demo_project/screens/product_review/review.dart';
 import 'package:demo_project/screens/user_profile/user_profile.dart';
 import 'package:demo_project/services/global_method.dart';
@@ -138,7 +139,10 @@ class _HomeHeaderState extends State<HomeHeader> {
               leading: const Icon(Icons.shopping_cart, color: Colors.green),
               title: const Text(' My Orders '),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => const MyOrdersScreen())));
               },
             ),
             ListTile(

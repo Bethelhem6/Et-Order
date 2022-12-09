@@ -148,8 +148,7 @@ class _UserScreenState extends State<UserScreen> {
                           ),
                         );
                       }),
-                      Consumer<WhishlistProvider>(builder: (context, wp, _) {
-                        return Card(
+                      Card(
                           child: ListTile(
                             onTap: () {
                               Navigator.push(
@@ -157,26 +156,18 @@ class _UserScreenState extends State<UserScreen> {
                                   MaterialPageRoute(
                                       builder: (context) => WhishlistPage()));
                             },
-                            leading: Badge(
-                              badgeColor: Colors.green,
-                              toAnimate: true,
-                              animationType: BadgeAnimationType.slide,
-                              position: BadgePosition.topEnd(top: -4, end: -10),
-                              badgeContent: Text(
-                                wp.whishlist.length.toString(),
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                              child: const Icon(
+                           
+                              leading: const Icon(
                                 Icons.favorite,
                                 size: 30,
                                 color: Colors.red,
                               ),
-                            ),
+                            
                             title: const Text('Whishlist'),
                             trailing: const Icon(Icons.arrow_forward_ios),
                           ),
-                        );
-                      }),
+                        ),
+                      
 
                       // User Settings
                       const _userTileHeightSpace(height: 15),
