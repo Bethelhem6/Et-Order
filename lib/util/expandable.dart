@@ -32,14 +32,14 @@ class _ExpandableTextWidgetState extends State<ExpandableTextWidget> {
       child: secondHalf.isEmpty
           ? Text(
               firtHalf,
-              style: TextStyle(fontSize: 17, letterSpacing: 0),
+              style: const TextStyle(fontSize: 17, letterSpacing: 0),
             )
           : Container(
-              padding: EdgeInsets.only(top: 15),
+              padding: const EdgeInsets.only(top: 15),
               child: Column(
                 children: [
                   Text(hiddenText
-                      ? (firtHalf + "...")
+                      ? ("$firtHalf...")
                       : (firtHalf + secondHalf)),
                   InkWell(
                     onTap: () {

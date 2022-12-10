@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'dart:async';
 
 import 'package:demo_project/auth/auth_screen.dart';
@@ -62,7 +64,7 @@ class _LandingScreenState extends State<WelcomeScreen>
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  AuthStateScreen(),
+          builder: (context) =>  const AuthStateScreen(),
         ));
   }
 

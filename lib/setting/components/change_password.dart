@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -24,7 +26,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       ),
       body: Form(
         child: Container(
-          margin: EdgeInsets.all(30),
+          margin: const EdgeInsets.all(30),
           height: MediaQuery.of(context).size.height * 0.40,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

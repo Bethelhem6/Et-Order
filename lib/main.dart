@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:demo_project/auth/auth_screen.dart';
 import 'package:demo_project/provider/cart_and%20_provider.dart';
 import 'package:demo_project/provider/whishlist_provider.dart';

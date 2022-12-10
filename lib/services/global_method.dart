@@ -6,14 +6,14 @@ class GlobalMethods {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text(" Notice"),
+            title: const Text(" Notice"),
             content: Text(subtitle),
             actions: [
               TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text("Okay")),
+                  child: const Text("Okay")),
               // TextButton(
               //   onPressed: () {
               //     Navigator.pop(context);

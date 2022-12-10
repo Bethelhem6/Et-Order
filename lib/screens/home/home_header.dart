@@ -136,6 +136,17 @@ class _HomeHeaderState extends State<HomeHeader> {
               },
             ),
             ListTile(
+              leading: Icon(Icons.logout, color: Colors.red.shade700),
+              title: const Text('LogOut'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            const Divider(
+              height: 5,
+              color: Colors.green,
+            ),
+            ListTile(
               leading: const Icon(Icons.shopping_cart, color: Colors.green),
               title: const Text(' My Orders '),
               onTap: () {
@@ -156,6 +167,10 @@ class _HomeHeaderState extends State<HomeHeader> {
                 // Navigator.pop(context);
               },
             ),
+            const Divider(
+              height: 5,
+              color: Colors.green,
+            ),
             ListTile(
               leading:
                   const Icon(Icons.notifications, color: Colors.deepPurple),
@@ -175,13 +190,6 @@ class _HomeHeaderState extends State<HomeHeader> {
                   ),
                 );
                 // Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.logout, color: Colors.red.shade700),
-              title: const Text('LogOut'),
-              onTap: () {
-                Navigator.pop(context);
               },
             ),
           ],

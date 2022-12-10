@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 class Setting extends StatefulWidget {
   static const routeName = "/setting";
 
+  const Setting({Key? key}) : super(key: key);
+
   @override
   State<Setting> createState() => SettingState();
 }
@@ -26,7 +28,7 @@ class SettingState extends State<Setting> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(30),
+              padding: const EdgeInsets.all(30),
               child: const Text(
                 "Preferences",
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
@@ -52,7 +54,7 @@ class SettingState extends State<Setting> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: ((context) => ChangePassword())));
+                        builder: ((context) => const ChangePassword())));
               },
               leading: const Icon(Icons.privacy_tip_outlined),
               title: const Text("Change Password"),
