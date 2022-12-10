@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 
 class OrdersDetail extends StatefulWidget {
   const OrdersDetail({Key? key}) : super(key: key);
@@ -52,7 +50,7 @@ class _OrdersDetailState extends State<OrdersDetail> {
                                 width: 130,
                                 decoration: BoxDecoration(
                                   color: Colors.purple[200],
-                                  image: DecorationImage(
+                                  image: const DecorationImage(
                                     image: AssetImage("assets/aloe.jpg"),
                                     fit: BoxFit.cover,
                                   ),
@@ -66,12 +64,12 @@ class _OrdersDetailState extends State<OrdersDetail> {
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
-                                      children: [
+                                      children: const [
                                         Flexible(
                                           child: Text(
                                             "sections[i]['title']",
                                             overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold),
                                           ),

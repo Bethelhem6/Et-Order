@@ -5,7 +5,6 @@ import 'package:demo_project/util/column.dart';
 import 'package:demo_project/util/icons.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/cart_and _provider.dart';
@@ -49,7 +48,6 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
     final whishlistProvider = Provider.of<WhishlistProvider>(context);
-    var box = Hive.box<Whishlist>("wishlist_products");
 
     return Column(
       children: [
@@ -99,7 +97,7 @@ class _ProductPageState extends State<ProductPage> {
                             Align(
                               alignment: Alignment.bottomCenter,
                               child: Container(
-                                height: 100,
+                                height: 120,
                                 width: 240,
                                 margin: const EdgeInsets.only(
                                     left: 20, right: 20, bottom: 40),

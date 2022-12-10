@@ -1,5 +1,8 @@
-import 'package:demo_project/screens/my_orders/orders_card.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
+
+import 'orders_detail.dart';
 
 class MyOrdersScreen extends StatefulWidget {
   const MyOrdersScreen({Key? key}) : super(key: key);
@@ -34,9 +37,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                   "My Orders",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 25,
+                    fontSize: 20,
                   ),
                 ),
+                centerTitle: true,
               ),
               centerTitle: true,
             ),
@@ -62,28 +66,28 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                       ),
                       tabs: [
                         Tab(
-                          text: "Delivered",
+                          text: "Processing",
                         ),
                         Tab(
                           text: "Completed",
                         ),
                         Tab(
-                          text: "Cancelled",
+                          text: "Delivered",
                         ),
                       ],
                     ),
-                    Container(
-                      height: MediaQuery.of(context).size.height,
+                    SizedBox(
+                      height: 600,
                       child: TabBarView(
                         children: [
-                          OrdersCard(
-                            status: "Delivered",
+                          ordersCard(
+                            "processing orders",
                           ),
-                          OrdersCard(
-                            status: "Completed",
+                          ordersCard(
+                            "completed orders",
                           ),
-                          OrdersCard(
-                            status: "Cancelled",
+                          ordersCard(
+                            "delivered orders",
                           ),
                         ],
                       ),
@@ -95,6 +99,143 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  StreamBuilder<QuerySnapshot<Map<String, dynamic>>> ordersCard(
+      String collection) {
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+      stream: FirebaseFirestore.instance.collection(collection).snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final List<DocumentSnapshot<Map<String, dynamic>>> documents =
+              snapshot.data!.docs;
+
+          return ListView(
+            children: documents
+                .map((doc) => Card(
+                      elevation: 10,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        const TextSpan(
+                                          text: "OrderId: ",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: doc['orderId'],
+                                          style: const TextStyle(
+                                            overflow: TextOverflow.ellipsis,
+                                            color: Colors.grey,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Text(
+                                  doc['orderData'],
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      const TextSpan(
+                                        text: "Total amount: ",
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: doc['TotalPricewithDelivery']
+                                            .toString(),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                MaterialButton(
+                                  color: Colors.green.shade300,
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: ((context) =>
+                                                const OrdersDetail())));
+                                  },
+                                  child: const Text(
+                                    "Details",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {},
+                                  child: Text(
+                                    doc['status'],
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ))
+                .toList(),
+          );
+        }
+
+        return const Center(
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
     );
   }
 }

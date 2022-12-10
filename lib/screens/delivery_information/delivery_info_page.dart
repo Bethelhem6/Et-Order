@@ -208,7 +208,7 @@ class _DeliveryInformationState extends State<DeliveryInformation> {
                             final _uid = user!.uid;
                             try {
                               await FirebaseFirestore.instance
-                                  .collection('orders')
+                                  .collection('processing orders')
                                   .doc(orderId)
                                   .set({
                                 "customer information": {
@@ -233,6 +233,7 @@ class _DeliveryInformationState extends State<DeliveryInformation> {
                                 "orderData": formattedDate,
                                 "orderId": orderId,
                                 'name': _fullName,
+                                'status': "Processing"
                               });
 
                               Navigator.pop(context);

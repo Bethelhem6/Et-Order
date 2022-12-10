@@ -12,6 +12,7 @@ class AppColumn extends StatelessWidget {
       children: [
         Text(
           text,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
               color: Colors.green[700],
               fontSize: 25,

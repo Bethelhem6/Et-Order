@@ -1,16 +1,12 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, prefer_final_fields, unused_element
 
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:demo_project/provider/whishlist_provider.dart';
 import 'package:demo_project/screens/about.dart';
-
 import 'package:demo_project/screens/change_pasword_page.dart';
 import 'package:demo_project/wishlist/wishlist_page.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 
 import '../../../provider/cart_and _provider.dart';
@@ -127,7 +123,7 @@ class _UserScreenState extends State<UserScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Cart()));
+                                      builder: (context) => const Cart()));
                             },
                             leading: Badge(
                               toAnimate: true,
@@ -154,7 +150,7 @@ class _UserScreenState extends State<UserScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => WhishlistPage()));
+                                      builder: (context) => const WhishlistPage()));
                             },
                            
                               leading: const Icon(
@@ -184,7 +180,7 @@ class _UserScreenState extends State<UserScreen> {
                           // Navigator.pop(context);
 
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Login()));
+                              MaterialPageRoute(builder: (context) => const Login()));
                           // print("loggedout");
                         },
                       ),
@@ -197,7 +193,7 @@ class _UserScreenState extends State<UserScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: ((context) => ChangePassword())));
+                                  builder: ((context) => const ChangePassword())));
                         },
                       ),
 
@@ -231,13 +227,13 @@ class _UserScreenState extends State<UserScreen> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => About()),
+                            MaterialPageRoute(builder: (context) => const About()),
                           );
                         },
                         child: ListTile(
-                          leading: Icon(Icons.help_outline_rounded),
+                          leading: const Icon(Icons.help_outline_rounded),
                           iconColor: Colors.green,
-                          title: Text('About'),
+                          title: const Text('About'),
                           trailing: Icon(
                             Icons.arrow_forward_ios,
                             color: Colors.grey[600],

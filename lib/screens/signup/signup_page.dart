@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, prefer_final_fields
+// ignore_for_file: use_build_context_synchronously, prefer_final_fields, unused_element, non_constant_identifier_names
 
 import 'dart:io';
 
@@ -56,13 +56,13 @@ class _Signup extends State<Signup> {
   bool _isVisible = false;
 
   void _submitData() async {
-    final _isValid = _formKey.currentState!.validate();
+    final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
     var date = DateTime.now().toString();
     var parsedDate = DateTime.parse(date);
     var formattedDate =
         '${parsedDate.day}/${parsedDate.month}/${parsedDate.year}';
-    if (_isValid) {
+    if (isValid) {
       if (checkBoxValue) {
         _formKey.currentState!.save();
       }
@@ -78,7 +78,7 @@ class _Signup extends State<Signup> {
         final ref = FirebaseStorage.instance
             .ref()
             .child('userimages')
-            .child(_fullName + '.jpg');
+            .child('$_fullName.jpg');
         await ref.putFile(_image!);
         _url = await ref.getDownloadURL();
 
@@ -86,9 +86,9 @@ class _Signup extends State<Signup> {
             email: _email.toLowerCase().trim(), password: _password.trim());
 
         final User? user = _auth.currentUser;
-        final _uid = user!.uid;
-        FirebaseFirestore.instance.collection('users').doc(_uid).set({
-          'id': _uid,
+        final uid = user!.uid;
+        FirebaseFirestore.instance.collection('users').doc(uid).set({
+          'id': uid,
           'name': _fullName,
           'email': _email,
           'phoneNumber': _phoneNumber,
@@ -189,86 +189,83 @@ class _Signup extends State<Signup> {
                 ),
                 Form(
                   key: _formKey,
-                  child: Container(
-                    // height: 400,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        TextFormField(
-                          onSaved: (value) {
-                            _fullName = value!;
-                          },
-                          textInputAction: TextInputAction.next,
-                          onEditingComplete: () => FocusScope.of(context)
-                              .requestFocus(_numberFocusNode),
-                          key: const ValueKey('name'),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your full name';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Full Name',
-                            // filled: true,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            prefixIcon: const Icon(Icons.person),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      TextFormField(
+                        onSaved: (value) {
+                          _fullName = value!;
+                        },
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () => FocusScope.of(context)
+                            .requestFocus(_numberFocusNode),
+                        key: const ValueKey('name'),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your full name';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Full Name',
+                          // filled: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
+                          prefixIcon: const Icon(Icons.person),
                         ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          onSaved: (value) {
-                            _phoneNumber = int.parse(value!);
-                          },
-                          keyboardType: TextInputType.phone,
-                          textInputAction: TextInputAction.next,
-                          onEditingComplete: () => FocusScope.of(context)
-                              .requestFocus(_emailFocusNode),
-                          // keyboardType: TextInputType.emailAddress,
-                          key: const ValueKey('number'),
-                          validator: (value) {
-                            if (value!.length < 10) {
-                              return 'Phone number must be 11 units';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Phone Number',
-                            // filled: true,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            prefixIcon: const Icon(Icons.phone),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      TextFormField(
+                        onSaved: (value) {
+                          _phoneNumber = int.parse(value!);
+                        },
+                        keyboardType: TextInputType.phone,
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () => FocusScope.of(context)
+                            .requestFocus(_emailFocusNode),
+                        // keyboardType: TextInputType.emailAddress,
+                        key: const ValueKey('number'),
+                        validator: (value) {
+                          if (value!.length < 10) {
+                            return 'Phone number must be 11 units';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Phone Number',
+                          // filled: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
+                          prefixIcon: const Icon(Icons.phone),
                         ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        email(),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        password(),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        terms(),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Signup(context),
-                        log_in(context),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      email(),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      password(),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      terms(),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Signup(context),
+                      log_in(context),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -372,7 +369,7 @@ class _Signup extends State<Signup> {
     );
   }
 
-  Widget Signup(BuildContext _context) {
+  Widget Signup(BuildContext context) {
     return _isLoading
         ? const Center(
             child: CircularProgressIndicator(),
@@ -448,49 +445,45 @@ class _Signup extends State<Signup> {
         ),
         // Text("data"),
         showTerms
-            ? Container(
-                // decoration: BoxDecoration(border:),
-                // width: 290,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      "1. As from now on you will be a family of bj etherbal onlineshope. ",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Text(
-                      "2. You can order any ETHERBAL products using the app",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Text(
-                      "3. After you order the products, We will send you a message to tell you in how many days will your product will be delivered.",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Text(
-                      "4. if your orders did not delivered in those days please contact us. ",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
+            ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  "1. As from now on you will be a family of bj etherbal onlineshope. ",
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey,
+                  ),
                 ),
-              )
+                Text(
+                  "2. You can order any ETHERBAL products using the app",
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey,
+                  ),
+                ),
+                Text(
+                  "3. After you order the products, We will send you a message to tell you in how many days will your product will be delivered.",
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey,
+                  ),
+                ),
+                Text(
+                  "4. if your orders did not delivered in those days please contact us. ",
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            )
             : Container()
       ],
     );
   }
 
-  Widget log_in(BuildContext _context) {
+  Widget log_in(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -510,7 +503,7 @@ class _Signup extends State<Signup> {
           ),
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Login()));
+                context, MaterialPageRoute(builder: (context) => const Login()));
           },
         ),
       ],

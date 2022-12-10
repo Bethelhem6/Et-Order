@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields, avoid_print
+
 import 'package:hive/hive.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -44,7 +46,6 @@ class WhishlistProvider with ChangeNotifier {
   var box = Hive.box<Whishlist>("wishlist_products");
 
   void addOrRemoveWish(String title, String id, String image, double price) {
-    bool inBox = false;
     if (_whishlist.containsKey(id)) {
       removeItem(id);
       box.delete(title);

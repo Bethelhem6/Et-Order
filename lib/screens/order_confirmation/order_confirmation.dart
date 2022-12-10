@@ -35,7 +35,7 @@ class _OrderConfirmationState extends State<OrderConfirmation> {
       _uid = user!.uid;
 
       final DocumentSnapshot userDocs = await FirebaseFirestore.instance
-          .collection("orders")
+          .collection("processing orders")
           .doc(widget.orderId)
           .get();
       setState(() {
