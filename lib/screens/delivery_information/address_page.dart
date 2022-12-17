@@ -1,9 +1,7 @@
-// ignore_for_file: prefer_final_fields
-
-import 'dart:async';
-
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
 
 class AddressPage extends StatefulWidget {
   const AddressPage({Key? key}) : super(key: key);
@@ -13,43 +11,100 @@ class AddressPage extends StatefulWidget {
 }
 
 class _AddressPageState extends State<AddressPage> {
- Completer<GoogleMapController> _controller = Completer();
+  final String email = '';
+  final String name = '';
+  final String phoneNo = '';
+  final String city = '';
+  final String subCity = '';
+  final String street = '';
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: const Text(
+          "Checkout",
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        elevation: 0,
+      ),
+      body: ListView.builder(
+          itemCount: 5,
+          itemBuilder: (context, index) {
+            return Container(
+              margin: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 15,
+              ),
+              child: Card(
+                elevation: 10,
+                shadowColor: Colors.green.shade100,
+                child: Column(
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 18.0),
+                      child: Text(
+                        "Address 1",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                        ),
+                      ),
+                    ),
+                    AddresRowMaker(
+                        text1: "Name:  ", text2: "Bethelhem Misgina"),
+                    AddresRowMaker(
+                        text1: "Email:  ", text2: "bettymisg@gmail.com"),
+                    AddresRowMaker(
+                        text1: "phoneNumber:  ", text2: "0918732261"),
+                    AddresRowMaker(text1: "City: ", text2: " Addiss Ababa"),
+                    AddresRowMaker(text1: "SubCity: ", text2: " Gulelle"),
+                    AddresRowMaker(text1: "Street: ", text2: " Addisu gebeya"),
+                  ],
+                ),
+              ),
+            );
+          }),
+    );
+  }
+}
 
-  // ignore: prefer_const_constructors
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: const LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
-  // ignore: prefer_const_constructors
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: const LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+class AddresRowMaker extends StatelessWidget {
+  const AddresRowMaker({
+    Key? key,
+    required this.text1,
+    required this.text2,
+  }) : super(key: key);
+  final String text1;
+  final String text2;
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unnecessary_new
-    return new Scaffold(
-      body: GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 10,
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: const Text('To the lake!'),
-        icon: const Icon(Icons.directions_boat),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            text1,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          Text(
+            text2,
+            style: const TextStyle(
+              color: Colors.grey,
+              fontSize: 18,
+            ),
+          ),
+        ],
       ),
     );
   }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }
-
 }
