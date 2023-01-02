@@ -28,7 +28,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                   ),
                 ),
               ],
-              expandedHeight: 100,
+              expandedHeight: 50,
               floating: false,
               pinned: true,
               elevation: 0,
@@ -82,12 +82,15 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                         children: [
                           ordersCard(
                             "processing orders",
+                            Colors.orange,
+                          ),
+                          ordersCard(
+                            "completed orders",
+                            Colors.deepPurple,
                           ),
                           ordersCard(
                             "processing orders",
-                          ),
-                          ordersCard(
-                            "processing orders",
+                            Colors.green,
                           ),
                         ],
                       ),
@@ -103,7 +106,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
   }
 
   StreamBuilder<QuerySnapshot<Map<String, dynamic>>> ordersCard(
-      String collection) {
+      String collection, Color statusColor) {
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       stream: FirebaseFirestore.instance.collection(collection).snapshots(),
       builder: (context, snapshot) {
@@ -175,7 +178,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                         ),
                                       ),
                                       TextSpan(
-                                        text: doc['TotalPricewithDelivery']
+                                        text: doc["TotalPricewithDelivery"]
                                             .toString(),
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -199,8 +202,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: ((context) =>
-                                                const OrdersDetail())));
+                                            builder: ((context) => OrdersDetail(
+                                                  document: doc['orderId'],
+                                                  collection: collection,
+                                                ))));
                                   },
                                   child: const Text(
                                     "Details",
@@ -214,9 +219,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                   onPressed: () {},
                                   child: Text(
                                     doc['status'],
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
+                                      color: statusColor,
                                     ),
                                   ),
                                 )
@@ -228,13 +234,19 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                     ))
                 .toList(),
           );
+        } else if (!snapshot.hasData) {
+          return const Center(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else {
+          return const Center(
+            child: Center(
+              child: Text("No Data Found"),
+            ),
+          );
         }
-
-        return const Center(
-          child: Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
       },
     );
   }

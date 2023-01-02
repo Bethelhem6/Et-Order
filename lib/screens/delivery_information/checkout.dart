@@ -297,9 +297,9 @@ class _CheckoutState extends State<Checkout> {
                                       .map((value) => value.toMap())
                                       .toList()
                                 ],
-                                // "TotalPricewithDelivery": widget.total,
-                                // "deliveryFee": widget.deliveryFee,
-                                // "subtotal": widget.subtotal,
+                                "TotalPricewithDelivery": widget.total,
+                                "deliveryFee": widget.deliveryFee,
+                                "subtotal": widget.subtotal,
                                 "orderData": formattedDate,
                                 "orderId": orderId,
                                 'name': _fullName,
