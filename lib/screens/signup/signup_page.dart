@@ -36,6 +36,9 @@ class _Signup extends State<Signup> {
   String _email = '';
   String _password = '';
   String _fullName = '';
+  String _city = '';
+  String _subCity = '';
+  String _street = '';
   late int _phoneNumber;
   File? _image;
   String _url = '';
@@ -94,7 +97,19 @@ class _Signup extends State<Signup> {
           'phoneNumber': _phoneNumber,
           'imageUrl': _url,
           'joinedDate': formattedDate,
-          'role': 'customer'
+          'role': 'customer',
+          "customer information": {
+            'name': _fullName,
+            'email': _email,
+            'phoneNumber': _phoneNumber,
+          },
+          "delivery information": {
+            'city': _city,
+            'subCity': _subCity,
+            'street': _street,
+          },
+          "addressAddedDate": formattedDate,
+
           // 'createdAt': TimeStamp.now()
         });
 
@@ -117,6 +132,9 @@ class _Signup extends State<Signup> {
   FocusNode _passwordFocusNode = FocusNode();
   FocusNode _emailFocusNode = FocusNode();
   FocusNode _numberFocusNode = FocusNode();
+  FocusNode _streetFocusNode = FocusNode();
+  FocusNode _cityFocusNode = FocusNode();
+  FocusNode _subcityFocusNode = FocusNode();
 
   @override
   void dispose() {
@@ -177,10 +195,12 @@ class _Signup extends State<Signup> {
                     // SizedBox(
                     //   height: 10,
                     // ),
-                    const Text(
+                    Text(
                       "Please enter your information.",
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                      style: TextStyle(
+                          color: Colors.grey.shade600,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700),
                     ),
                   ],
                 ),
@@ -256,6 +276,19 @@ class _Signup extends State<Signup> {
                       const SizedBox(
                         height: 15,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 50, vertical: 15),
+                        child: Text(
+                          "Delivery address Information",
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      delivery_information_form(),
                       terms(),
                       const SizedBox(
                         height: 15,
@@ -314,7 +347,8 @@ class _Signup extends State<Signup> {
       onSaved: (value) {
         _password = value!;
       },
-      onEditingComplete: _submitData,
+      onEditingComplete: () =>
+          FocusScope.of(context).requestFocus(_cityFocusNode),
       obscureText: !_isVisible,
       key: const ValueKey('password'),
       validator: (value) {
@@ -446,38 +480,38 @@ class _Signup extends State<Signup> {
         // Text("data"),
         showTerms
             ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  "1. As from now on you will be a family of bj etherbal onlineshope. ",
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.grey,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    "1. As from now on you will be a family of bj etherbal onlineshope. ",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey,
+                    ),
                   ),
-                ),
-                Text(
-                  "2. You can order any ETHERBAL products using the app",
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.grey,
+                  Text(
+                    "2. You can order any ETHERBAL products using the app",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey,
+                    ),
                   ),
-                ),
-                Text(
-                  "3. After you order the products, We will send you a message to tell you in how many days will your product will be delivered.",
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.grey,
+                  Text(
+                    "3. After you order the products, We will send you a message to tell you in how many days will your product will be delivered.",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey,
+                    ),
                   ),
-                ),
-                Text(
-                  "4. if your orders did not delivered in those days please contact us. ",
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.grey,
+                  Text(
+                    "4. if your orders did not delivered in those days please contact us. ",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey,
+                    ),
                   ),
-                ),
-              ],
-            )
+                ],
+              )
             : Container()
       ],
     );
@@ -502,9 +536,105 @@ class _Signup extends State<Signup> {
                 fontSize: 15, color: Colors.blue, fontWeight: FontWeight.bold),
           ),
           onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => const Login()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const Login()));
           },
+        ),
+      ],
+    );
+  }
+
+  Column delivery_information_form() {
+    return Column(
+      // mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0),
+          child: TextFormField(
+            focusNode: _cityFocusNode,
+            onSaved: (value) {
+              _city = value!;
+            },
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter City';
+              }
+              return null;
+            },
+            onEditingComplete: () =>
+                FocusScope.of(context).requestFocus(_subcityFocusNode),
+            decoration: InputDecoration(
+              labelText: 'City',
+              labelStyle: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 18,
+                  fontWeight: FontWeight.normal),
+              // floatingLabelBehavior: FloatingLabelBehavior.always,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              prefixIcon: const Icon(Icons.location_on_outlined),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+          child: TextFormField(
+            focusNode: _subcityFocusNode,
+            onSaved: (value) {
+              _subCity = value!;
+            },
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter SubCity';
+              }
+              return null;
+            },
+            onEditingComplete: () =>
+                FocusScope.of(context).requestFocus(_streetFocusNode),
+            decoration: InputDecoration(
+              labelText: 'Subcity',
+              labelStyle: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 18,
+                  fontWeight: FontWeight.normal),
+              // floatingLabelBehavior: FloatingLabelBehavior.always,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              prefixIcon: const Icon(Icons.location_city_rounded),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 0,
+          ),
+          child: TextFormField(
+            focusNode: _streetFocusNode,
+            onSaved: (value) {
+              _street = value!;
+            },
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter Street';
+              }
+              return null;
+            },
+            onEditingComplete: checkBoxValue ? _submitData : null,
+            decoration: InputDecoration(
+              labelText: 'Street name',
+              labelStyle: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 18,
+                  fontWeight: FontWeight.normal),
+              // floatingLabelBehavior: FloatingLabelBehavior.always,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              prefixIcon: const Icon(Icons.streetview_rounded),
+            ),
+          ),
         ),
       ],
     );

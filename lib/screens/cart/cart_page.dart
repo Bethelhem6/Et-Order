@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use, camel_case_types, no_leading_underscores_for_local_identifiers, unused_local_variable
 
 import 'package:demo_project/provider/cart_and%20_provider.dart';
+import 'package:demo_project/screens/delivery_information/checkout.dart';
 import 'package:demo_project/screens/home/home_header.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -130,7 +131,6 @@ class _Cart extends State<Cart> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                  
                     ListView.builder(
                         // scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
@@ -366,7 +366,7 @@ class bottom_section extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => DeliveryInformation(
+                      builder: (context) => Checkout(
                           subtotal: cartProvider.subTotal,
                           deliveryFee: cartProvider.deliveryFee,
                           total: cartProvider.deliveryFee +

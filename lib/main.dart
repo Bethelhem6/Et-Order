@@ -3,7 +3,10 @@
 import 'package:demo_project/auth/auth_screen.dart';
 import 'package:demo_project/provider/cart_and%20_provider.dart';
 import 'package:demo_project/provider/whishlist_provider.dart';
+import 'package:demo_project/screens/delivery_information/checkout.dart';
+import 'package:demo_project/screens/login/login_page.dart';
 import 'package:demo_project/screens/my_orders/my_orders_screen.dart';
+import 'package:demo_project/screens/signup/signup_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -38,7 +41,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
-        home: const AuthStateScreen(),
+        home: AuthStateScreen(),
+        //  Checkout(deliveryFee: 2, subtotal: 3, total: 45),
       ),
     );
   }

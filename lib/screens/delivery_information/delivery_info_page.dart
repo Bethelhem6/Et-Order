@@ -3,24 +3,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../../provider/cart_and _provider.dart';
 import 'package:uuid/uuid.dart';
 
-import '../order_confirmation/order_confirmation.dart';
-
 class DeliveryInformation extends StatefulWidget {
-  final double subtotal;
-  final double deliveryFee;
-  final double total;
-
-  const DeliveryInformation(
-      {Key? key,
-      required this.subtotal,
-      required this.total,
-      required this.deliveryFee})
-      : super(key: key);
+  const DeliveryInformation({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<DeliveryInformation> createState() => _DeliveryInformationState();
@@ -55,7 +43,6 @@ class _DeliveryInformationState extends State<DeliveryInformation> {
 
   @override
   Widget build(BuildContext context) {
-    final cartProvider = Provider.of<CartProvider>(context);
     // ignore: prefer_const_declarations
     final _uuid = const Uuid();
     var date = DateTime.now().toString();
@@ -66,7 +53,7 @@ class _DeliveryInformationState extends State<DeliveryInformation> {
       appBar: AppBar(
         backgroundColor: Colors.green,
         title: const Text(
-          "Checkout",
+          "New Address",
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -79,32 +66,17 @@ class _DeliveryInformationState extends State<DeliveryInformation> {
             crossAxisAlignment: CrossAxisAlignment.start,
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Container(
-              //   padding: const EdgeInsets.all(15),
-              //   margin:
-              //       const EdgeInsets.symmetric(vertical: 15, horizontal: 90),
-              //   decoration: BoxDecoration(
-              //       color: Colors.green[300],
-              //       borderRadius: BorderRadius.circular(20)),
-              //   child: const Text(
-              //     "Select Address",
+              // const Padding(
+              //   padding: EdgeInsets.all(20.0),
+              //   child: Text(
+              //     "Customer Information",
               //     style: TextStyle(
-              //         color: Colors.white,
+              //         color: Colors.black,
               //         fontSize: 20,
               //         fontWeight: FontWeight.bold),
               //   ),
               // ),
-              const Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Text(
-                  "Customer Information",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              customer_information_form(),
+              // customer_information_form(),
               const Padding(
                 padding: EdgeInsets.all(20.0),
                 child: Text(
@@ -116,164 +88,77 @@ class _DeliveryInformationState extends State<DeliveryInformation> {
                 ),
               ),
               delivery_information_form(),
-              const Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Text(
-                  "Order Summery",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
+              const SizedBox(
+                height: 30,
               ),
-              const Divider(
-                height: 3,
-                color: Colors.grey,
-              ),
-              Container(
-                  padding: const EdgeInsets.only(top: 10),
-                  color: Colors.green[50],
-                  height: 200,
-                  child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        // crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "SUBTOTAL: ",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "Birr ${widget.subtotal}",
-                            style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          const Text(
-                            "DELIVERY FEE:",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "Birr  ${widget.deliveryFee} ",
-                            style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          const Text(
-                            "TOTAL:",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "Birr ${widget.total} ",
-                            style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                          final orderId = _uuid.v4();
-                          final _isValid = _formKey.currentState!.validate();
-                          FocusScope.of(context).unfocus();
+              GestureDetector(
+                  onTap: () async {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    final addressId = _uuid.v4();
+                    final _isValid = _formKey.currentState!.validate();
+                    FocusScope.of(context).unfocus();
 
-                          if (_isValid) {
-                            _formKey.currentState!.save();
-                            User? user = FirebaseAuth.instance.currentUser;
-                            final _uid = user!.uid;
-                            try {
-                              await FirebaseFirestore.instance
-                                  .collection('processing orders')
-                                  .doc(orderId)
-                                  .set({
-                                "customer information": {
-                                  'userId': _uid,
-                                  'name': _fullName,
-                                  'email': _email,
-                                  'phoneNumber': _phoneNumber,
-                                },
-                                "delivery information": {
-                                  'city': _city,
-                                  'subCity': _subCity,
-                                  'street': _street,
-                                },
-                                "ordered products": [
-                                  ...cartProvider.cartList.values
-                                      .map((value) => value.toMap())
-                                      .toList()
-                                ],
-                                "TotalPricewithDelivery": widget.total,
-                                "deliveryFee": widget.deliveryFee,
-                                "subtotal": widget.subtotal,
-                                "orderData": formattedDate,
-                                "orderId": orderId,
-                                'name': _fullName,
-                                'status': "Processing"
-                              });
+                    if (_isValid) {
+                      _formKey.currentState!.save();
+                      User? user = FirebaseAuth.instance.currentUser;
 
-                              Navigator.pop(context);
+                      final _uid = user!.uid;
 
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => OrderConfirmation(
-                                            subtotal: widget.subtotal,
-                                            deliveryFee: widget.deliveryFee,
-                                            total: widget.total,
-                                            orderId: orderId,
-                                          )));
-                            } catch (e) {
-                              print(e.toString());
-                            }
-                          } else {
-                            print("not valid");
-                          }
+                      try {
+                        await FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(_uid)
+                            .update({
+                          "delivery information": {
+                            'city': _city,
+                            'subCity': _subCity,
+                            'street': _street,
+                          },
+                          "addressAddedDate": formattedDate,
+                          "orderId": addressId,
+                          'name': _fullName,
+                        });
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        print("done");
+                        Navigator.pop(context);
+                        // Navigator.push(context, MaterialPageRoute(builder: (context)=>Ch))
+                      } catch (e) {
+                        print(e);
+                      }
+                    }
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 70,
+                    ),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: _isLoading
+                          ? Center(
+                              child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ))
+                          : Text(
+                              "Add Address",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                    ),
+                  )
 
-                          cartProvider.clearCart();
-                        },
-                        child: Container(
-                          //width: 200,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 50.0, vertical: 20),
-                          decoration: BoxDecoration(
-                              color: Colors.green[300],
-                              borderRadius: BorderRadius.circular(20)),
-                          child: const Text(
-                            "Order Now",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ))
+                  //
+                  )
             ],
           ),
         ),

@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:demo_project/screens/delivery_information/delivery_info_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class AddressPage extends StatefulWidget {
   const AddressPage({Key? key}) : super(key: key);
@@ -17,51 +16,141 @@ class _AddressPageState extends State<AddressPage> {
   final String city = '';
   final String subCity = '';
   final String street = '';
+  int selectedAddress = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
         title: const Text(
-          "Checkout",
+          "Select Address",
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         elevation: 0,
+      ),
+      bottomSheet: BottomSheet(
+        onClosing: () {},
+        builder: (context) {
+          return Container(
+            height: 70,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) =>
+                      //             const DeliveryInformation()));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Text(
+                          "Continue",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const DeliveryInformation()));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Text(
+                          "New Address",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ),
+                  ),
+                ]),
+          );
+        },
       ),
       body: ListView.builder(
           itemCount: 5,
           itemBuilder: (context, index) {
             return Container(
               margin: const EdgeInsets.symmetric(
-                horizontal: 20,
+                horizontal: 30,
                 vertical: 15,
               ),
-              child: Card(
-                elevation: 10,
-                shadowColor: Colors.green.shade100,
-                child: Column(
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 18.0),
-                      child: Text(
-                        "Address 1",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedAddress = index;
+                  });
+                },
+                child: Card(
+                  shape: (selectedAddress == index)
+                      ? const RoundedRectangleBorder(
+                          side: BorderSide(color: Colors.green, width: 3),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                        )
+                      : null,
+                  elevation: 10,
+                  color: Colors.grey.shade200,
+                  shadowColor: Colors.green.shade100,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 18.0),
+                        child: Text(
+                          "Address ${index + 1}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                          ),
                         ),
                       ),
-                    ),
-                    AddresRowMaker(
-                        text1: "Name:  ", text2: "Bethelhem Misgina"),
-                    AddresRowMaker(
-                        text1: "Email:  ", text2: "bettymisg@gmail.com"),
-                    AddresRowMaker(
-                        text1: "phoneNumber:  ", text2: "0918732261"),
-                    AddresRowMaker(text1: "City: ", text2: " Addiss Ababa"),
-                    AddresRowMaker(text1: "SubCity: ", text2: " Gulelle"),
-                    AddresRowMaker(text1: "Street: ", text2: " Addisu gebeya"),
-                  ],
+                      const AddresRowMaker(
+                          text1: "Name:  ", text2: "Bethelhem Misgina"),
+                      const AddresRowMaker(
+                          text1: "Email:  ", text2: "bettymisg@gmail.com"),
+                      const AddresRowMaker(
+                          text1: "phoneNumber:  ", text2: "0918732261"),
+                      const AddresRowMaker(
+                          text1: "City: ", text2: " Addiss Ababa"),
+                      const AddresRowMaker(
+                          text1: "SubCity: ", text2: " Gulelle"),
+                      const AddresRowMaker(
+                          text1: "Street: ", text2: " Addisu gebeya"),
+                      const SizedBox(
+                        height: 18,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -91,13 +180,15 @@ class AddresRowMaker extends StatelessWidget {
         children: [
           Text(
             text1,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
               fontSize: 18,
             ),
           ),
           Text(
             text2,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               color: Colors.grey,
               fontSize: 18,

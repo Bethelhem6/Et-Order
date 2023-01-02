@@ -84,10 +84,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                             "processing orders",
                           ),
                           ordersCard(
-                            "completed orders",
+                            "processing orders",
                           ),
                           ordersCard(
-                            "delivered orders",
+                            "processing orders",
                           ),
                         ],
                       ),
