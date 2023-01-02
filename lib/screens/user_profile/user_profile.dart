@@ -145,25 +145,23 @@ class _UserScreenState extends State<UserScreen> {
                         );
                       }),
                       Card(
-                          child: ListTile(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const WhishlistPage()));
-                            },
-                           
-                              leading: const Icon(
-                                Icons.favorite,
-                                size: 30,
-                                color: Colors.red,
-                              ),
-                            
-                            title: const Text('Whishlist'),
-                            trailing: const Icon(Icons.arrow_forward_ios),
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const WhishlistPage()));
+                          },
+                          leading: const Icon(
+                            Icons.favorite,
+                            size: 30,
+                            color: Colors.red,
                           ),
+                          title: const Text('Whishlist'),
+                          trailing: const Icon(Icons.arrow_forward_ios),
                         ),
-                      
+                      ),
 
                       // User Settings
                       const _userTileHeightSpace(height: 15),
@@ -179,8 +177,10 @@ class _UserScreenState extends State<UserScreen> {
                           Navigator.pop(context);
                           // Navigator.pop(context);
 
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => const Login()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Login()));
                           // print("loggedout");
                         },
                       ),
@@ -193,13 +193,14 @@ class _UserScreenState extends State<UserScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: ((context) => const ChangePassword())));
+                                  builder: ((context) =>
+                                      const ChangePassword())));
                         },
                       ),
 
                       // User Information
                       const _userTileHeightSpace(height: 15),
-                      const _userTileText(text: 'User Informattion'),
+                      const _userTileText(text: 'User Information'),
                       const _userTileHeightSpace(height: 10),
                       _userListTile(
                         lIcon: Icons.call,
@@ -227,7 +228,8 @@ class _UserScreenState extends State<UserScreen> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const About()),
+                            MaterialPageRoute(
+                                builder: (context) => const About()),
                           );
                         },
                         child: ListTile(

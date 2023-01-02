@@ -51,6 +51,34 @@ class _ProductPageState extends State<ProductPage> {
 
     return Column(
       children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 25,
+              ),
+              child: Text(
+                "Packages",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
+              child: TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    "show all",
+                    style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16,
+                        decoration: TextDecoration.underline),
+                  )),
+            )
+          ],
+        ),
         StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             stream:
                 FirebaseFirestore.instance.collection('packages').snapshots(),
@@ -64,7 +92,7 @@ class _ProductPageState extends State<ProductPage> {
               }
               return Container(
                   margin: const EdgeInsets.only(top: 20),
-                  height: 300,
+                  height: 270,
                   child: PageView.builder(
                       controller: pageController,
                       itemCount: snapshot.data!.docs.length,
@@ -100,7 +128,7 @@ class _ProductPageState extends State<ProductPage> {
                                 height: 120,
                                 width: 240,
                                 margin: const EdgeInsets.only(
-                                    left: 20, right: 20, bottom: 40),
+                                    left: 20, right: 20, bottom: 20),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(25),
                                     color: Colors.white,
@@ -278,7 +306,7 @@ class _ProductPageState extends State<ProductPage> {
             }),
 
         const SizedBox(
-          height: 15,
+          height: 10,
         ),
         //recomended Text
         Container(
@@ -286,12 +314,31 @@ class _ProductPageState extends State<ProductPage> {
             margin: const EdgeInsets.only(
               left: 30,
             ),
-            child: const Text(
-              "Single Products",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Single Products",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
+                  child: TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        "show all",
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16,
+                            decoration: TextDecoration.underline),
+                      )),
+                )
+              ],
             )),
 
         const SizedBox(
@@ -306,7 +353,9 @@ class _ProductPageState extends State<ProductPage> {
               return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: snapshot.data!.docs.length,
+                  itemCount: snapshot.data!.docs.length < 4
+                      ? snapshot.data!.docs.length
+                      : 4,
                   itemBuilder: ((context, index) {
                     return Container(
                       // height: ,
