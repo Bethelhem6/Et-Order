@@ -44,10 +44,10 @@ class _MainPageState extends State<MainPage> {
       PersistentBottomNavBarItem(
           icon: const Icon(
             Icons.shopping_cart_outlined,
-            color: Colors.orange,
+            color: Colors.green,
           ),
           title: 'cart',
-          activeColorPrimary: Colors.orange.shade50,
+          activeColorPrimary: Colors.green.shade50,
           inactiveColorPrimary: Colors.green[200]),
       PersistentBottomNavBarItem(
           icon: const Icon(Icons.shopping_bag_outlined),

@@ -6,6 +6,7 @@ import 'package:demo_project/util/icons.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../view_more_produccts_page.dart';
 
 import '../../provider/cart_and _provider.dart';
 import '../../provider/whishlist_provider.dart';
@@ -68,7 +69,14 @@ class _ProductPageState extends State<ProductPage> {
                 horizontal: 20,
               ),
               child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ViewMore(
+                                  collection: 'packages',
+                                )));
+                  },
                   child: const Text(
                     "show all",
                     style: TextStyle(
@@ -329,7 +337,14 @@ class _ProductPageState extends State<ProductPage> {
                     horizontal: 20,
                   ),
                   child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ViewMore(
+                                      collection: 'products',
+                                    )));
+                      },
                       child: const Text(
                         "show all",
                         style: TextStyle(

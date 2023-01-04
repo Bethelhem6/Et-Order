@@ -110,7 +110,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                 decoration: const BoxDecoration(color: Colors.green),
                 accountName: Text(
                   _name,
-                  style: const TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 16),
                 ),
                 accountEmail: Text(_email),
                 currentAccountPictureSize: const Size.square(50),
@@ -126,7 +126,10 @@ class _HomeHeaderState extends State<HomeHeader> {
             ),
             ListTile(
               leading: const Icon(Icons.person, color: Colors.blue),
-              title: const Text(' My Profile '),
+              title: const Text(
+                ' My Profile ',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
               onTap: () {
                 Navigator.push(
                     context,
@@ -137,7 +140,10 @@ class _HomeHeaderState extends State<HomeHeader> {
             ),
             ListTile(
               leading: Icon(Icons.logout, color: Colors.red.shade700),
-              title: const Text('LogOut'),
+              title: const Text(
+                'LogOut',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
@@ -148,7 +154,10 @@ class _HomeHeaderState extends State<HomeHeader> {
             ),
             ListTile(
               leading: const Icon(Icons.shopping_cart, color: Colors.green),
-              title: const Text(' My Orders '),
+              title: const Text(
+                ' My Orders ',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
               onTap: () {
                 Navigator.push(
                     context,
@@ -158,7 +167,10 @@ class _HomeHeaderState extends State<HomeHeader> {
             ),
             ListTile(
               leading: const Icon(Icons.favorite, color: Colors.red),
-              title: const Text(' Wishlists '),
+              title: const Text(
+                ' Wishlists ',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
               onTap: () {
                 Navigator.push(
                     context,
@@ -174,14 +186,20 @@ class _HomeHeaderState extends State<HomeHeader> {
             ListTile(
               leading:
                   const Icon(Icons.notifications, color: Colors.deepPurple),
-              title: const Text(' Notification '),
+              title: const Text(
+                ' Notification ',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
               leading: const Icon(Icons.star, color: Colors.amber),
-              title: const Text(' Rates and Reviews '),
+              title: const Text(
+                ' Rates and Reviews ',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
               onTap: () {
                 Navigator.push(
                   context,

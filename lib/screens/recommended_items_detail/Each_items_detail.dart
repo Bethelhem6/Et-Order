@@ -3,6 +3,7 @@
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project/provider/whishlist_provider.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -111,11 +112,16 @@ class _EachItemDetailState extends State<EachItemDetail> {
                   backgroundColor: Colors.white,
                   expandedHeight: 300,
                   flexibleSpace: FlexibleSpaceBar(
-                    background: Image.network(
-                      productDoc['image'],
-                      width: double.maxFinite,
-                      fit: BoxFit.cover,
-                    ),
+                    background: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 1,
+                        itemBuilder: (context, index) {
+                          return Image.network(
+                            productDoc['image'],
+                            width: double.maxFinite,
+                            fit: BoxFit.cover,
+                          );
+                        }),
                   ),
                 ),
                 SliverToBoxAdapter(

@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -28,7 +28,6 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   badges: ^2.0.3
-  
   cloud_firestore: ^4.3.1
   completer_ex: ^3.0.0
   cupertino_icons: ^1.0.2
@@ -42,28 +41,27 @@ dependencies:
     sdk: flutter
   flutter_rating_bar: ^4.0.1
   get: null
+  google_fonts: ^3.0.1
   google_maps_flutter: ^2.2.1
- 
+  hive: null
+  hive_flutter: null
   image_picker: ^0.8.5+3
   persistent_bottom_nav_bar: any
   provider: ^6.0.3
   url_launcher: ^6.1.5
   uuid: ^3.0.6
-  hive:
-  hive_flutter:
 
 dev_dependencies:
+  build_runner: null
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-  hive_generator:
-  build_runner:
+  hive_generator: null
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

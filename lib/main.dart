@@ -7,8 +7,10 @@ import 'package:demo_project/screens/delivery_information/checkout.dart';
 import 'package:demo_project/screens/login/login_page.dart';
 import 'package:demo_project/screens/my_orders/my_orders_screen.dart';
 import 'package:demo_project/screens/signup/signup_page.dart';
+import 'package:demo_project/screens/view_more_produccts_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -40,6 +42,10 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.green,
+          textTheme: TextTheme(
+              bodyText2: GoogleFonts.cormorantGaramond(),
+              bodyText1: GoogleFonts.cormorantGaramond(),
+             ),
         ),
         home: AuthStateScreen(),
         //  Checkout(deliveryFee: 2, subtotal: 3, total: 45),
