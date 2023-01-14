@@ -38,8 +38,8 @@ class _ViewMoreState extends State<ViewMore> {
 
             return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-                  childAspectRatio: 2 / 2,
+                  maxCrossAxisExtent: 250,
+                  childAspectRatio: 3 / 3,
                 ),
                 itemCount: data.length,
                 itemBuilder: (ctx, index) {
@@ -50,12 +50,12 @@ class _ViewMoreState extends State<ViewMore> {
                         MaterialPageRoute(
                           builder: (context) => widget.collection == "packages"
                               ? MainCategory(
-                                    id: data[index]['id'],
-                                  )
+                                  id: data[index]['id'],
+                                )
                               : EachItemDetail(
-                                      id: data[index]['id'],
-                                      press: () {},
-                                    ),
+                                  id: data[index]['id'],
+                                  press: () {},
+                                ),
                         ),
                       );
                     },
@@ -65,7 +65,7 @@ class _ViewMoreState extends State<ViewMore> {
                       child: Stack(
                         children: [
                           Container(
-                            height: 300,
+                            height: 200,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
@@ -86,7 +86,7 @@ class _ViewMoreState extends State<ViewMore> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              height: 60,
+                              height: 80,
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [

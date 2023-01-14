@@ -1,18 +1,26 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: avoid_print
 
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:demo_project/screens/product_review/review_widget.dart';
+import 'package:demo_project/services/global_method.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:demo_project/screens/product_review/review_widget.dart';
 import 'package:demo_project/util/icons.dart';
 
 class ProductReview extends StatefulWidget {
-  const ProductReview({Key? key}) : super(key: key);
+  String productId;
+  String productTitle;
+  ProductReview({
+    Key? key,
+    required this.productId,
+    required this.productTitle,
+  }) : super(key: key);
 
   @override
   State<ProductReview> createState() => _ProductReviewState();
@@ -27,6 +35,8 @@ class _ProductReviewState extends State<ProductReview> {
   bool isLoaded = false;
   double star = 0;
   double initialStar = 2.5;
+  final _formKey = GlobalKey<FormState>();
+  GlobalMethods _globalMethods = GlobalMethods();
 
   String id = DateTime.now().toString();
 
@@ -57,17 +67,25 @@ class _ProductReviewState extends State<ProductReview> {
       _url = userDocs.get("imageUrl");
       _name = userDocs.get("name");
     });
+    print(_name);
   }
 
   void sendReview(double star, String review, File? image, var date) async {
-    await FirebaseFirestore.instance.collection("reviews").doc(id).set({
-      "name": _name,
-      "stars": star,
-      "image": _url,
-      "reviewDate": date,
-      "review": review,
-      "picAdded": image,
-    });
+    if (_formKey.currentState!.validate()) {
+      await FirebaseFirestore.instance
+          .collection("reviews ${widget.productTitle}")
+          .doc(id)
+          .set({
+        "name": _name,
+        "stars": star,
+        "image": _url,
+        "reviewDate": date,
+        "review": review,
+        "picAdded": image,
+      });
+    } else {
+      _globalMethods.showDialogues(context, "Fill all neccessary forms");
+    }
   }
 
   @override
@@ -92,7 +110,9 @@ class _ProductReviewState extends State<ProductReview> {
       ),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
-        child: const ReviewsWidget(),
+        child: ReviewsWidget(
+          productTitle: widget.productTitle,
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
@@ -135,184 +155,188 @@ class _ProductReviewState extends State<ProductReview> {
                   topRight: Radius.circular(25.0),
                 ),
               ),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text(
-                    "What is your rate?",
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  RatingBar.builder(
-                    initialRating: initialStar,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (rating) {
-                      setState(() {
-                        star = rating;
-                      });
-                    },
-                    updateOnDrag: true,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 15.0, left: 20, right: 20),
-                    // ignore: unnecessary_const
-                    child: const Text(
-                      "Please share your opinion",
+                    const Text(
+                      "What is your rate?",
                       style: TextStyle(
-                        fontSize: 17,
+                        fontSize: 25,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20, right: 20),
-                    // ignore: unnecessary_const
-                    child: const Text(
-                      "about our products.",
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    const SizedBox(
+                      height: 15,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15.0, horizontal: 35),
-                    child: TextField(
-                      controller: textarea,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 7,
-                      onEditingComplete: () {
-                        FocusScope.of(context).unfocus();
+                    RatingBar.builder(
+                      initialRating: initialStar,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+                        setState(() {
+                          star = rating;
+                        });
                       },
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintText: "Your review",
-                        hintStyle: const TextStyle(
-                          color: Colors.grey,
+                      updateOnDrag: true,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 15.0, left: 20, right: 20),
+                      // ignore: unnecessary_const
+                      child: const Text(
+                        "Please share your opinion",
+                        style: TextStyle(
                           fontSize: 17,
+                          fontWeight: FontWeight.bold,
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide:
-                              const BorderSide(color: Colors.green, width: 0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: const BorderSide(color: Colors.green)),
                       ),
                     ),
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20.0, right: 10),
-                        child: Container(
-                          decoration: const BoxDecoration(),
-                          child: _image == null
-                              ? null
-                              : Image.file(
-                                  _image!,
-                                  fit: BoxFit.cover,
-                                ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 20, right: 20),
+                      // ignore: unnecessary_const
+                      child: const Text(
+                        "about our products.",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: GestureDetector(
-                          onTap: () async {
-                            try {
-                              final image = await ImagePicker()
-                                  .pickImage(source: ImageSource.gallery);
-                              setState(() {
-                                _image = File(image!.path);
-                                print(_image);
-                              });
-                            } catch (e) {
-                              print(e);
-                            }
-                          },
-                          child: Column(
-                            children: const [
-                              AppIcon(
-                                icon: Icons.camera_enhance,
-                                backgroundColor: Colors.green,
-                                iconColor: Colors.white,
-                                iconSize: 30,
-                                size: 60,
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "Add photos",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      sendReview(star, textarea.text,
-                          _image == null ? null : _image!, formattedDate);
-
-                      textarea.clear();
-
-                      _image = null;
-
-                      Navigator.pop(context);
-                      showBox(context);
-
-                      print("done");
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 20),
-                      decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Text(
-                          "SEND REVIEW",
-                          style: TextStyle(
-                            color: Colors.white,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 35),
+                      child: TextFormField(
+                        controller: textarea,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 7,
+                        onEditingComplete: () {
+                          FocusScope.of(context).unfocus();
+                        },
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: "Your review",
+                          hintStyle: const TextStyle(
+                            color: Colors.grey,
                             fontSize: 17,
-                            fontWeight: FontWeight.bold,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide:
+                                const BorderSide(color: Colors.green, width: 0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide:
+                                  const BorderSide(color: Colors.green)),
+                        ),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0, right: 10),
+                          child: Container(
+                            decoration: const BoxDecoration(),
+                            child: _image == null
+                                ? null
+                                : Image.file(
+                                    _image!,
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: GestureDetector(
+                            onTap: () async {
+                              try {
+                                final image = await ImagePicker()
+                                    .pickImage(source: ImageSource.gallery);
+                                setState(() {
+                                  _image = File(image!.path);
+                                  print(_image);
+                                });
+                              } catch (e) {
+                                print(e);
+                              }
+                            },
+                            child: Column(
+                              children: const [
+                                AppIcon(
+                                  icon: Icons.camera_enhance,
+                                  backgroundColor: Colors.green,
+                                  iconColor: Colors.white,
+                                  iconSize: 30,
+                                  size: 60,
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  "Add photos",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        sendReview(star, textarea.text,
+                            _image == null ? null : _image!, formattedDate);
+
+                        textarea.clear();
+
+                        _image = null;
+
+                        Navigator.pop(context);
+                        showBox(context);
+
+                        print("done");
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: MediaQuery.of(context).size.width,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 20),
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Text(
+                            "SEND REVIEW",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

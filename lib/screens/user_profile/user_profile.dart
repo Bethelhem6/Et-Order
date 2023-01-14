@@ -173,6 +173,8 @@ class _UserScreenState extends State<UserScreen> {
                         color: Colors.red,
                         title: 'Logout',
                         onTap: () async {
+
+                        
                           await _auth.signOut();
                           Navigator.pop(context);
                           // Navigator.pop(context);

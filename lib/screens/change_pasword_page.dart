@@ -101,7 +101,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                             height: 15,
                           ),
                           // ignore: deprecated_member_use
-                          RaisedButton(
+                          MaterialButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 setState(() {

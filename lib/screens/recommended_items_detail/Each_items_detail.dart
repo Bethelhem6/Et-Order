@@ -1,17 +1,15 @@
-// ignore_for_file: avoid_print, no_leading_underscores_for_local_identifiers, unused_local_variable, use_build_context_synchronously, prefer_const_declarations, file_names
-
-import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:demo_project/provider/whishlist_provider.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
+import 'package:badges/badges.dart';
 
 import '../../../provider/cart_and _provider.dart';
 import '../../../util/expandable.dart';
 import '../../../util/icons.dart';
+import '../../provider/whishlist_provider.dart';
 import '../cart/cart_page.dart';
+import '../product_review/review.dart';
 
 class EachItemDetail extends StatefulWidget {
   final String id;
@@ -25,15 +23,13 @@ class EachItemDetail extends StatefulWidget {
 
 class _EachItemDetailState extends State<EachItemDetail> {
   int count = 1;
-  bool isAdded = false;
+  // bool isAdded = false;
 
   @override
   Widget build(BuildContext context) {
-    final cartProvider = Provider.of<CartProvider>(context);
     final whishlistProvider = Provider.of<WhishlistProvider>(context);
 
-    final _uuid = const Uuid();
-
+    final cartProvider = Provider.of<CartProvider>(context);
     return Scaffold(
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           // <2> Pass `Stream<QuerySnapshot>` to stream
@@ -99,34 +95,93 @@ class _EachItemDetailState extends State<EachItemDetail> {
                       width: double.maxFinite,
                       padding: const EdgeInsets.only(top: 5, bottom: 10),
                       child: Center(
-                          child: Text(
-                        productDoc['title'],
-                        style: const TextStyle(
-                            fontSize: 25,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      )),
+                        child: Text(
+                          productDoc['title'],
+                          style: const TextStyle(
+                              fontSize: 25,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
                   ),
                   pinned: true,
                   backgroundColor: Colors.white,
                   expandedHeight: 300,
                   flexibleSpace: FlexibleSpaceBar(
-                    background: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 1,
-                        itemBuilder: (context, index) {
-                          return Image.network(
-                            productDoc['image'],
-                            width: double.maxFinite,
-                            fit: BoxFit.cover,
-                          );
-                        }),
+                    background: Image.network(
+                      productDoc['image'],
+                      width: double.maxFinite,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 SliverToBoxAdapter(
                   child: Column(
                     children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          RatingBar.builder(
+                            initialRating: 3.5,
+                            minRating: 4,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemPadding:
+                                const EdgeInsets.symmetric(horizontal: 1.0),
+                            itemBuilder: (context, _) => const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            ignoreGestures: true,
+                            onRatingUpdate: (rating) {},
+                            updateOnDrag: true,
+                            itemSize: 22,
+                          ),
+                          Text(
+                            "  ( 3.5 )",
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey[600]),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) => ProductReview(
+                                            productId: widget.id,
+                                            productTitle: productDoc['title'],
+                                          ))));
+                            },
+                            child: Text(
+                              "View Customer Reviews",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue[600]),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Divider(
+                        height: 1,
+                        color: Colors.green,
+                      ),
                       Container(
                           margin: const EdgeInsets.only(
                               top: 10, left: 20, right: 20),

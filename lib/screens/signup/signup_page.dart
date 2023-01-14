@@ -358,8 +358,10 @@ class _Signup extends State<Signup> {
         return null;
       },
       decoration: InputDecoration(
-        labelStyle: const TextStyle(
-            fontSize: 18, fontWeight: FontWeight.normal, color: Colors.black),
+        labelStyle: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.normal,
+            color: Colors.grey[600]),
         labelText: "Password",
         // hintText: "6-digits",
         hintStyle: TextStyle(

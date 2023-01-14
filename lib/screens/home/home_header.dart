@@ -201,12 +201,12 @@ class _HomeHeaderState extends State<HomeHeader> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: ((context) => const ProductReview()),
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: ((context) => const ProductReview(p)),
+                //   ),
+                // );
                 // Navigator.pop(context);
               },
             ),

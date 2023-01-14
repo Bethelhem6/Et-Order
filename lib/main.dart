@@ -8,6 +8,7 @@ import 'package:demo_project/screens/login/login_page.dart';
 import 'package:demo_project/screens/my_orders/my_orders_screen.dart';
 import 'package:demo_project/screens/signup/signup_page.dart';
 import 'package:demo_project/screens/view_more_produccts_page.dart';
+import 'package:demo_project/screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

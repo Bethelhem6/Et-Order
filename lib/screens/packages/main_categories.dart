@@ -1,6 +1,9 @@
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo_project/screens/product_review/review.dart';
+import 'package:demo_project/screens/product_review/review_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../provider/cart_and _provider.dart';
@@ -45,7 +48,7 @@ class _MainCategoryState extends State<MainCategory> {
             if (snapshot.data == null) {
               return const Center(
                 child: Center(
-                  child:  CircularProgressIndicator(),
+                  child: CircularProgressIndicator(),
                 ),
               );
             }
@@ -128,12 +131,67 @@ class _MainCategoryState extends State<MainCategory> {
                         color: Colors.white),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         AppColumn(
                           text: productDoc['title'],
                         ),
+                        Row(
+                          children: [
+                            RatingBar.builder(
+                              initialRating: 4.2,
+                              minRating: 4,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              itemPadding:
+                                  const EdgeInsets.symmetric(horizontal: 1.0),
+                              itemBuilder: (context, _) => const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              ignoreGestures: true,
+                              onRatingUpdate: (rating) {},
+                              updateOnDrag: true,
+                              itemSize: 22,
+                            ),
+                            Text(
+                              "(4.2)",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey[600]),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => ProductReview(
+                                          productId: widget.id,
+                                          productTitle: productDoc['title'],
+                                        ))));
+                          },
+                          child: Text(
+                            "View Reviews",
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue[600]),
+                          ),
+                        ),
                         const SizedBox(
                           height: 30,
+                        ),
+                        Divider(
+                          height: 2,
+                          color: Colors.green[100],
                         ),
                         const Text(
                           "Description",
@@ -220,19 +278,19 @@ class _MainCategoryState extends State<MainCategory> {
                           ),
                         ),
                         GestureDetector(
-                            onTap: () async{
+                            onTap: () async {
                               whishlistProvider.addOrRemoveWish(
                                   productDoc['id'],
                                   productDoc['title'],
                                   productDoc['image'],
                                   double.parse(productDoc['price']));
-                            //   Whishlist wishlist = Whishlist(
-                            //       image: productDoc['image'],
-                            //       title: productDoc['title'],
-                            //       price:  double.parse(productDoc['price']),
-                            //       id: productDoc['id']);
-                            //   var box = await Hive.openBox('wishlist_list');
-                            //       box.put(productDoc['id'], wishlist);
+                              //   Whishlist wishlist = Whishlist(
+                              //       image: productDoc['image'],
+                              //       title: productDoc['title'],
+                              //       price:  double.parse(productDoc['price']),
+                              //       id: productDoc['id']);
+                              //   var box = await Hive.openBox('wishlist_list');
+                              //       box.put(productDoc['id'], wishlist);
                             },
                             child: whishlistProvider.whishlist
                                     .containsKey(productDoc['title'])
