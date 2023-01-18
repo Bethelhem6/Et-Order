@@ -36,15 +36,18 @@ dependencies:
   equatable: ^2.0.5
   firebase_auth: ^4.2.4
   firebase_core: ^2.4.1
+  firebase_messaging: ^14.2.1
   firebase_storage: ^11.0.10
   flutter:
     sdk: flutter
+  flutter_local_notifications: ^13.0.0
   flutter_rating_bar: ^4.0.1
   get: null
   google_fonts: ^3.0.1
   google_maps_flutter: ^2.2.1
   hive: null
   hive_flutter: null
+  http: ^0.13.5
   image_picker: ^0.8.5+3
   persistent_bottom_nav_bar: any
   provider: ^6.0.3

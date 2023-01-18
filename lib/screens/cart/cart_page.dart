@@ -300,7 +300,7 @@ class bottom_section extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      height: 150,
+      height: 170,
       margin: const EdgeInsets.only(top: 5, bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 30.0),
       decoration: BoxDecoration(
