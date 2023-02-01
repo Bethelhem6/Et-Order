@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 
 import '../../../provider/cart_and _provider.dart';
 import '../../../util/expandable.dart';
@@ -54,7 +55,7 @@ class _EachItemDetailState extends State<EachItemDetail> {
                   title:
                       Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                     Consumer<CartProvider>(builder: (context, cp, _) {
-                      return Badge(
+                      return badges.Badge(
                         toAnimate: true,
                         shape: BadgeShape.circle,
                         borderRadius: BorderRadius.circular(5),

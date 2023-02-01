@@ -36,7 +36,7 @@ class _HomeHeaderState extends State<HomeHeader> {
     _uid = user!.uid;
 
     final DocumentSnapshot userDocs =
-        await FirebaseFirestore.instance.collection("users").doc(_uid).get();
+        await FirebaseFirestore.instance.collection("customers").doc(_uid).get();
     setState(() {
       _url = userDocs.get("imageUrl");
       _email = userDocs.get("email");

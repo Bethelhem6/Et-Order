@@ -54,7 +54,7 @@ class _Login extends State<Login> {
           User? user = _auth.currentUser;
           _uid = user!.uid;
           final DocumentSnapshot result = await FirebaseFirestore.instance
-              .collection('users')
+              .collection('customers')
               .doc(_uid)
               .get();
 

@@ -3,7 +3,7 @@ import 'package:demo_project/screens/my_orders/my_orders_screen.dart';
 import 'package:demo_project/wishlist/wishlist_page.dart';
 
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../cart/cart_page.dart';
 import '../user_profile/user_profile.dart';
@@ -34,7 +34,7 @@ class _MainPageState extends State<MainPage> {
           title: 'home',
           activeColorPrimary: Colors.grey,
           inactiveColorPrimary: Colors.green[200]),
-      PersistentBottomNavBarItem(
+     PersistentBottomNavBarItem (
           icon: const Icon(
             Icons.favorite,
           ),

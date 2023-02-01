@@ -64,7 +64,7 @@ class CartProvider with ChangeNotifier {
     return subtotal + deliveryFee(subtotal);
   }
 
-  String get totalString => _total(subTotal, deliveryFee).toStringAsFixed(2);
+  double get totalString => _total(subTotal, deliveryFee);
 
   void addToCart(String title, String id, String image, double price) {
     if (_cartList.containsKey(id)) {

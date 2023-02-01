@@ -2,6 +2,7 @@
 
 import 'package:demo_project/provider/cart_and%20_provider.dart';
 import 'package:demo_project/screens/delivery_information/checkout.dart';
+import 'package:demo_project/screens/delivery_information/payment_direct.dart';
 import 'package:demo_project/screens/home/home_header.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -366,9 +367,7 @@ class bottom_section extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Checkout(
-                          subtotal: cartProvider.subTotal,
-                          deliveryFee: cartProvider.deliveryFee,
+                      builder: (context) => IntermidatePage(
                           total: cartProvider.deliveryFee +
                               cartProvider.subTotal)));
             },

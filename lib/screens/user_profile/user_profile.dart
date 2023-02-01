@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, prefer_final_fields, unused_element
 
 import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project/screens/about.dart';
 import 'package:demo_project/screens/change_pasword_page.dart';
@@ -39,7 +40,7 @@ class _UserScreenState extends State<UserScreen> {
     _uid = user!.uid;
 
     final DocumentSnapshot userDocs =
-        await FirebaseFirestore.instance.collection('users').doc(_uid).get();
+        await FirebaseFirestore.instance.collection('customers').doc(_uid).get();
 
     _name = userDocs.get('name');
     _email = userDocs.get('email');
@@ -125,7 +126,7 @@ class _UserScreenState extends State<UserScreen> {
                                   MaterialPageRoute(
                                       builder: (context) => const Cart()));
                             },
-                            leading: Badge(
+                            leading: badges.Badge(
                               toAnimate: true,
                               animationType: BadgeAnimationType.slide,
                               position: BadgePosition.topEnd(top: -4, end: -10),

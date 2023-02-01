@@ -141,13 +141,13 @@ class _DeliveryInformationState extends State<DeliveryInformation> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: _isLoading
-                          ? Center(
+                          ? const Center(
                               child: CircularProgressIndicator(
                               color: Colors.white,
                             ))
-                          : Text(
+                          : const Text(
                               "Add Address",
                               style: TextStyle(
                                   fontSize: 20,

@@ -1,7 +1,7 @@
+import 'package:badges/badges.dart' as badges;
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project/screens/product_review/review.dart';
-import 'package:demo_project/screens/product_review/review_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
@@ -86,7 +86,7 @@ class _MainCategoryState extends State<MainCategory> {
                               backgroundColor: Colors.greenAccent,
                             )),
                         Consumer<CartProvider>(builder: (context, cp, _) {
-                          return Badge(
+                          return  badges.Badge(
                             toAnimate: true,
                             shape: BadgeShape.circle,
                             // borderRadius: BorderRadius.circular(5),

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../home/main_page.dart';
 import 'components/order_summery.dart';
 
 class OrderConfirmation extends StatefulWidget {
@@ -151,6 +152,11 @@ class _OrderConfirmationState extends State<OrderConfirmation> {
             ),
             onPressed: () {
               Navigator.pop(context);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MainPage(),
+                  ));
             },
           ),
           // const order_detail(),
