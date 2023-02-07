@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../chapa_payment/chapa_payment initializer.dart';
 import '../../provider/cart_and _provider.dart';
 import '../order_confirmation/components/order_detail.dart';
 import '../order_confirmation/order_confirmation.dart';

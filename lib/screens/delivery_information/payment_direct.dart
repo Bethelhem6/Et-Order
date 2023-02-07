@@ -45,7 +45,7 @@ class IntermidatePage extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 70,
           ),
           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
               stream: FirebaseFirestore.instance
@@ -70,44 +70,47 @@ class IntermidatePage extends StatelessWidget {
                 List name = _fullName.split(" ");
                 String fname = name[0];
                 String lname = name[1];
-                return MaterialButton(
-                  onPressed: () {
-                    Chapa.paymentParameters(
-                      context: context, // context
-                      publicKey:
-                          'CHASECK_TEST-XcLb5JUwnXY4dBPzDJJyyFFiPMSvZ7CR',
-                      currency: 'ETB',
-                      amount: total.toString(),
-                      email: addressDoc["customer information"]['email'],
-                      firstName: fname,
-                      lastName: lname,
-                      txRef: '34TXTHHgb',
-                      title: 'title',
-                      desc: 'desc',
-                      namedRouteFallBack:
-                          '/fallbackSuccess', // fall back route name
-                    );
-                  },
-                  color: Colors.green[500],
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: const [
-                        Text(
-                          "Go to payment",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Icon(
-                          Icons.arrow_forward,
-                          color: Colors.white,
-                          size: 40,
-                        )
-                      ],
+                return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 30),
+                  child: MaterialButton(
+                    onPressed: () {
+                      Chapa.paymentParameters(
+                        context: context, // context
+                        publicKey:
+                            'CHASECK_TEST-XcLb5JUwnXY4dBPzDJJyyFFiPMSvZ7CR',
+                        currency: 'ETB',
+                        amount: total.toString(),
+                        email: addressDoc["customer information"]['email'],
+                        firstName: fname,
+                        lastName: lname,
+                        txRef: '34TXTHHgb',
+                        title: 'title',
+                        desc: 'desc',
+                        namedRouteFallBack:
+                            '/fallbackSuccess', // fall back route name
+                      );
+                    },
+                    color: Colors.green[500],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const [
+                          Text(
+                            "Go to payment",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white,
+                            size: 40,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 );

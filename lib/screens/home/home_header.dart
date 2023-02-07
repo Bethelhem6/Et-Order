@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_const, prefer_final_fields, unused_field
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo_project/screens/about.dart';
 import 'package:demo_project/screens/my_orders/my_orders_screen.dart';
 import 'package:demo_project/screens/product_review/review.dart';
 import 'package:demo_project/screens/user_profile/user_profile.dart';
@@ -35,8 +36,10 @@ class _HomeHeaderState extends State<HomeHeader> {
     User? user = _auth.currentUser;
     _uid = user!.uid;
 
-    final DocumentSnapshot userDocs =
-        await FirebaseFirestore.instance.collection("customers").doc(_uid).get();
+    final DocumentSnapshot userDocs = await FirebaseFirestore.instance
+        .collection("customers")
+        .doc(_uid)
+        .get();
     setState(() {
       _url = userDocs.get("imageUrl");
       _email = userDocs.get("email");
@@ -185,29 +188,14 @@ class _HomeHeaderState extends State<HomeHeader> {
             ),
             ListTile(
               leading:
-                  const Icon(Icons.notifications, color: Colors.deepPurple),
+                  const Icon(Icons.question_mark, color: Colors.deepPurple),
               title: const Text(
-                ' Notification ',
+                ' About Company ',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.star, color: Colors.amber),
-              title: const Text(
-                ' Rates and Reviews ',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: ((context) => const ProductReview(p)),
-                //   ),
-                // );
-                // Navigator.pop(context);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: ((context) => const About())));
               },
             ),
           ],

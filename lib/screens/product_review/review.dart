@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project/services/global_method.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,6 +31,7 @@ TextEditingController textarea = TextEditingController();
 
 class _ProductReviewState extends State<ProductReview> {
   String _url = "";
+  String _imageUrl = "";
   String _uid = "";
   String _name = '';
   bool isLoaded = false;
@@ -61,8 +63,10 @@ class _ProductReviewState extends State<ProductReview> {
     User? user = _auth.currentUser;
     _uid = user!.uid;
 
-    final DocumentSnapshot userDocs =
-        await FirebaseFirestore.instance.collection("users").doc(_uid).get();
+    final DocumentSnapshot userDocs = await FirebaseFirestore.instance
+        .collection("customers")
+        .doc(_uid)
+        .get();
     setState(() {
       _url = userDocs.get("imageUrl");
       _name = userDocs.get("name");
@@ -70,7 +74,7 @@ class _ProductReviewState extends State<ProductReview> {
     print(_name);
   }
 
-  void sendReview(double star, String review, File? image, var date) async {
+  void sendReview(double star, String review, String? image, var date) async {
     if (_formKey.currentState!.validate()) {
       await FirebaseFirestore.instance
           .collection("reviews ${widget.productTitle}")
@@ -250,12 +254,12 @@ class _ProductReviewState extends State<ProductReview> {
                         Padding(
                           padding: const EdgeInsets.only(left: 20.0, right: 10),
                           child: Container(
+                            height: 70,
                             decoration: const BoxDecoration(),
                             child: _image == null
                                 ? null
-                                : Image.file(
-                                    _image!,
-                                    fit: BoxFit.cover,
+                                : Image(
+                                    image: NetworkImage(_imageUrl),
                                   ),
                           ),
                         ),
@@ -270,6 +274,13 @@ class _ProductReviewState extends State<ProductReview> {
                                   _image = File(image!.path);
                                   print(_image);
                                 });
+
+                                final ref = FirebaseStorage.instance
+                                    .ref()
+                                    .child('reviews')
+                                    .child('$_name.jpg');
+                                await ref.putFile(_image!);
+                                _imageUrl = await ref.getDownloadURL();
                               } catch (e) {
                                 print(e);
                               }
@@ -301,8 +312,11 @@ class _ProductReviewState extends State<ProductReview> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        sendReview(star, textarea.text,
-                            _image == null ? null : _image!, formattedDate);
+                        sendReview(
+                            star,
+                            textarea.text,
+                            _image == null ? null : _imageUrl.toString(),
+                            formattedDate);
 
                         textarea.clear();
 

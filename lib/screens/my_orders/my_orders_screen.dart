@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,25 @@ class MyOrdersScreen extends StatefulWidget {
 }
 
 class _MyOrdersScreenState extends State<MyOrdersScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  String _uid = "";
+  String _name = '';
+
+  void _getData() async {
+    User? user = _auth.currentUser;
+    _uid = user!.uid;
+
+    final DocumentSnapshot userDocs = await FirebaseFirestore.instance
+        .collection("customers")
+        .doc(_uid)
+        .get();
+    setState(() {
+      _name = userDocs.get("name");
+    });
+    print(_name);
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -69,7 +89,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                           text: "Processing",
                         ),
                         Tab(
-                          text: "Completed",
+                          text: "Canceled",
                         ),
                         Tab(
                           text: "Delivered",
@@ -85,11 +105,11 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                             Colors.orange,
                           ),
                           ordersCard(
-                            "completed orders",
+                            "canceled orders",
                             Colors.deepPurple,
                           ),
                           ordersCard(
-                            "processing orders",
+                            "delivered orders",
                             Colors.green,
                           ),
                         ],
@@ -116,122 +136,140 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
 
           return ListView(
             children: documents
-                .map((doc) => Card(
-                      elevation: 10,
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text.rich(
-                                    TextSpan(
-                                      children: [
-                                        const TextSpan(
-                                          text: "OrderId: ",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: doc['orderId'],
-                                          style: const TextStyle(
-                                            overflow: TextOverflow.ellipsis,
-                                            color: Colors.grey,
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Text(
-                                  doc['orderData'],
-                                  style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text.rich(
+                .map(
+                  (doc) => Card(
+                    elevation: 10,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text.rich(
                                   TextSpan(
                                     children: [
                                       const TextSpan(
-                                        text: "Total amount: ",
+                                        text: "OrderId: ",
                                         style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
                                         ),
                                       ),
                                       TextSpan(
-                                        text: doc["TotalPricewithDelivery"]
-                                            .toString(),
+                                        text: doc['orderId'],
                                         style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
+                                          overflow: TextOverflow.ellipsis,
+                                          color: Colors.grey,
+                                          fontSize: 15,
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                MaterialButton(
-                                  color: Colors.green.shade300,
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: ((context) => OrdersDetail(
-                                                  document: doc['orderId'],
-                                                  collection: collection,
-                                                ))));
-                                  },
-                                  child: const Text(
-                                    "Details",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                doc['orderData'],
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    const TextSpan(
+                                      text: "Total amount: ",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 15,
+                                      ),
                                     ),
+                                    TextSpan(
+                                      text: doc["TotalPricewithDelivery"]
+                                          .toString(),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              MaterialButton(
+                                color: Colors.green.shade300,
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: ((context) => OrdersDetail(
+                                                document: doc['orderId'],
+                                                collection: collection,
+                                              ))));
+                                },
+                                child: const Text(
+                                  "Details",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
                                   ),
                                 ),
-                                TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    doc['status'],
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                      color: statusColor,
-                                    ),
+                              ),
+                              collection == "processing orders"
+                                  ? MaterialButton(
+                                      onPressed: () {
+                                        cancleOrder(orderId: doc['orderId']);
+                                      },
+                                      color: Colors.red.shade500,
+                                      child: const Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    )
+                                  : const Text(""),
+                              TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  doc['status'],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: statusColor,
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
                       ),
-                    ))
+                    ),
+                  ),
+                )
                 .toList(),
           );
         } else if (!snapshot.hasData) {
@@ -249,5 +287,46 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
         }
       },
     );
+  }
+}
+
+void cancleOrder({required orderId}) async {
+  var doc = await FirebaseFirestore.instance
+      .collection("processing orders")
+      .doc(orderId)
+      .get();
+
+  try {
+    await FirebaseFirestore.instance
+        .collection('canceled orders')
+        .doc(orderId)
+        .set({
+      "customer information": {
+        'userId': doc["customer information"]["userId"],
+        'name': doc["customer information"]["name"],
+        'email': doc["customer information"]["email"],
+        'phoneNumber': doc["customer information"]["phoneNomber"],
+      },
+      "delivery information": {
+        'city': doc["delivery information"]["city"],
+        'subCity': doc["delivery information"]["subCity"],
+        'street': doc["delivery information"]["street"],
+      },
+      "ordered products": doc["ordered products"],
+      "TotalPricewithDelivery": doc["TotalPricewithDelivery"],
+      "deliveryFee": doc["deliveryFee"],
+      "subtotal": doc["subtotal"],
+      "orderData": doc["orderData"],
+      "orderId": doc["orderId"],
+      'name': doc["name"],
+      'status': "canceled"
+    });
+    await FirebaseFirestore.instance
+        .collection("processing orders")
+        .doc(orderId)
+        .delete();
+    print("deleted");
+  } catch (e) {
+    print(e);
   }
 }

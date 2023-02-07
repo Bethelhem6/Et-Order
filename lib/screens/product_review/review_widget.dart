@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:demo_project/screens/product_review/review.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -14,9 +13,7 @@ class ReviewsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: FirebaseFirestore.instance
-            .collection("reviews ${productTitle}")
-            .snapshots(),
+        stream: FirebaseFirestore.instance.collection("reviews $productTitle").snapshots(),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return const Center(
@@ -32,6 +29,7 @@ class ReviewsWidget extends StatelessWidget {
             child: ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
+                  
                   return snapshot.data!.docs.isEmpty
                       ? SafeArea(
                           child: Column(
