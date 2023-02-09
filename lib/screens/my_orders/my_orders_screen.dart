@@ -16,7 +16,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String _uid = "";
-  String _name = '';
+  String _name = 'Bethelhem Misgina';
 
   void _getData() async {
     User? user = _auth.currentUser;
@@ -29,7 +29,13 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
     setState(() {
       _name = userDocs.get("name");
     });
-    print(_name);
+    print(_uid);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getData();
   }
 
   @override
@@ -39,20 +45,12 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
-            SliverAppBar(
-              actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.delete,
-                  ),
-                ),
-              ],
+            const SliverAppBar(
               expandedHeight: 50,
               floating: false,
               pinned: true,
               elevation: 0,
-              flexibleSpace: const FlexibleSpaceBar(
+              flexibleSpace: FlexibleSpaceBar(
                 title: Text(
                   "My Orders",
                   style: TextStyle(
@@ -110,7 +108,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                           ),
                           ordersCard(
                             "delivered orders",
-                            Colors.green,
+                            Colors.teal.shade800,
                           ),
                         ],
                       ),
@@ -128,165 +126,178 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
   StreamBuilder<QuerySnapshot<Map<String, dynamic>>> ordersCard(
       String collection, Color statusColor) {
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-      stream: FirebaseFirestore.instance.collection(collection).snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final List<DocumentSnapshot<Map<String, dynamic>>> documents =
-              snapshot.data!.docs;
-
-          return ListView(
-            children: documents
-                .map(
-                  (doc) => Card(
-                    elevation: 10,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      const TextSpan(
-                                        text: "OrderId: ",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: doc['orderId'],
-                                        style: const TextStyle(
-                                          overflow: TextOverflow.ellipsis,
-                                          color: Colors.grey,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 15,
-                              ),
-                              Text(
-                                doc['orderData'],
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text.rich(
-                                TextSpan(
+        stream: FirebaseFirestore.instance.collection(collection).snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final List<DocumentSnapshot<Map<String, dynamic>>> documents =
+                snapshot.data!.docs;
+            return ListView.builder(
+                itemCount: documents.length,
+                itemBuilder: (context, index) {
+                
+                  return ((documents[index]['customer information']["userId"]
+                                  .toString())
+                              .compareTo(_uid) ==
+                          0)
+                      ? Card(
+                          elevation: 10,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const TextSpan(
-                                      text: "Total amount: ",
-                                      style: TextStyle(
+                                    Expanded(
+                                      child: Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            const TextSpan(
+                                              text: "OrderId: ",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: documents[index]['orderId']
+                                                  ,
+                                              style: const TextStyle(
+                                                overflow: TextOverflow.ellipsis,
+                                                color: Colors.grey,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text(
+                                      documents[index]['orderData'],
+                                      style: const TextStyle(
                                         color: Colors.grey,
                                         fontSize: 15,
                                       ),
                                     ),
-                                    TextSpan(
-                                      text: doc["TotalPricewithDelivery"]
-                                          .toString(),
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text.rich(
+                                      TextSpan(
+                                        children: [
+                                          const TextSpan(
+                                            text: "Total amount: ",
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: documents[index]
+                                                    ["TotalPricewithDelivery"]
+                                                .toString(),
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              MaterialButton(
-                                color: Colors.green.shade300,
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: ((context) => OrdersDetail(
-                                                document: doc['orderId'],
-                                                collection: collection,
-                                              ))));
-                                },
-                                child: const Text(
-                                  "Details",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                  ),
+                                const SizedBox(
+                                  height: 15,
                                 ),
-                              ),
-                              collection == "processing orders"
-                                  ? MaterialButton(
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    MaterialButton(
+                                      color: Colors.green.shade300,
                                       onPressed: () {
-                                        cancleOrder(orderId: doc['orderId']);
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: ((context) =>
+                                                    OrdersDetail(
+                                                      document: documents[index]
+                                                          ['orderId'],
+                                                      collection: collection,
+                                                    ))));
                                       },
-                                      color: Colors.red.shade500,
                                       child: const Text(
-                                        "Cancel",
+                                        "Details",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                    collection == "processing orders"
+                                        ? MaterialButton(
+                                            onPressed: () {
+                                              cancleOrder(
+                                                  orderId: documents[index]
+                                                      ['orderId']);
+                                            },
+                                            color: Colors.red.shade500,
+                                            child: const Text(
+                                              "Cancel",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          )
+                                        : const Text(""),
+                                    TextButton(
+                                      onPressed: () {},
+                                      child: Text(
+                                        documents[index]['status'],
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18,
-                                          color: Colors.white,
+                                          color: statusColor,
                                         ),
                                       ),
                                     )
-                                  : const Text(""),
-                              TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  doc['status'],
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                    color: statusColor,
-                                  ),
+                                  ],
                                 ),
-                              )
-                            ],
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-                .toList(),
-          );
-        } else if (!snapshot.hasData) {
-          return const Center(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else {
-          return const Center(
-            child: Center(
-              child: Text("No Data Found"),
-            ),
-          );
-        }
-      },
-    );
+                        )
+                      :  Container();
+                  // }
+                  // return Container();
+                });
+          } else if (!snapshot.hasData) {
+            return const Center(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else {
+            return const Center(
+              child: Center(
+                child: Text("No Data Found"),
+              ),
+            );
+          }
+        });
   }
 }
 

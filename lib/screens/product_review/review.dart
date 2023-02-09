@@ -47,17 +47,7 @@ class _ProductReviewState extends State<ProductReview> {
 
   File? _image;
 
-  // Future _getImage() async {
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  //     setState(() {
-  //       _image = File(image!.path);
-  //       print(_image);
-  //     });
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+  
 
   void _getData() async {
     User? user = _auth.currentUser;

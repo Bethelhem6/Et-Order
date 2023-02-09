@@ -63,7 +63,7 @@ class _Login extends State<Login> {
             Navigator.pop(context);
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) =>const HomeHeader()),
+              MaterialPageRoute(builder: (context) => const HomeHeader()),
             );
           } else {
             if (mounted) {
@@ -116,12 +116,12 @@ class _Login extends State<Login> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
-               
                 Column(
-                  
                   mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
+                      alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 80.0, vertical: 10.0),
                       child: const CircleAvatar(
@@ -312,8 +312,8 @@ class _Login extends State<Login> {
                 fontSize: 15, color: Colors.blue, fontWeight: FontWeight.bold),
           ),
           onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => const Signup()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const Signup()));
           },
         ),
       ],

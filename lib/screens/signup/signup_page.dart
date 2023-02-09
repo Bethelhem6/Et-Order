@@ -176,7 +176,7 @@ class _Signup extends State<Signup> {
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 120.0, vertical: 10),
+                          horizontal: 150.0, vertical: 10),
                       child: InkWell(
                         onTap: _getImage,
                         child: CircleAvatar(

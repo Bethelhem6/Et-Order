@@ -1,7 +1,8 @@
-// ignore_for_file: unnecessary_const, prefer_final_fields, unused_field
+// ignore_for_file: unnecessary_const, prefer_final_fields, unused_field, use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project/screens/about.dart';
+import 'package:demo_project/screens/login/login_page.dart';
 import 'package:demo_project/screens/my_orders/my_orders_screen.dart';
 import 'package:demo_project/screens/product_review/review.dart';
 import 'package:demo_project/screens/user_profile/user_profile.dart';
@@ -147,7 +148,14 @@ class _HomeHeaderState extends State<HomeHeader> {
                 'LogOut',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-              onTap: () {
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => const Login()),
+                  ),
+                );
                 Navigator.pop(context);
               },
             ),

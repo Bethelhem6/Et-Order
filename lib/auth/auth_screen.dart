@@ -4,7 +4,6 @@ import 'package:demo_project/screens/login/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-
 class AuthStateScreen extends StatelessWidget {
   const AuthStateScreen({Key? key}) : super(key: key);
 
