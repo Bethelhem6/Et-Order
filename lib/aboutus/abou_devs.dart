@@ -83,8 +83,8 @@ class DevCrds extends StatelessWidget {
                       overflow: TextOverflow.fade,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                        color: Colors.green,
+                        fontSize: 23,
+                        color: Colors.black,
                       ),
                     ),
                      Text(role,
