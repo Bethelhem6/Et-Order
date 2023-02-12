@@ -4,13 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project/screens/about.dart';
 import 'package:demo_project/screens/login/login_page.dart';
 import 'package:demo_project/screens/my_orders/my_orders_screen.dart';
-import 'package:demo_project/screens/product_review/review.dart';
 import 'package:demo_project/screens/user_profile/user_profile.dart';
 import 'package:demo_project/services/global_method.dart';
 import 'package:demo_project/wishlist/wishlist_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../aboutus/abou_devs.dart';
 import '../search/search_page.dart';
 import 'product_page.dart';
 
@@ -128,6 +128,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                 ),
               ),
             ),
+             
             ListTile(
               leading: const Icon(Icons.person, color: Colors.blue),
               title: const Text(
@@ -193,6 +194,18 @@ class _HomeHeaderState extends State<HomeHeader> {
             const Divider(
               height: 5,
               color: Colors.green,
+            ),
+             ListTile(
+              leading:
+                  const Icon(Icons.groups, color: Colors.orange),
+              title: const Text(
+                ' About Developers ',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: ((context) => const AboutDevelopers())));
+              },
             ),
             ListTile(
               leading:

@@ -120,6 +120,7 @@ class _FallbackPageState extends State<FallbackPage> {
                   ? MaterialButton(
                       onPressed: () {
                         cartProvider.clearCart();
+                        Navigator.pop(context);
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
