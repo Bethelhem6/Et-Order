@@ -108,12 +108,12 @@ class _EachItemDetailState extends State<EachItemDetail> {
                   ),
                   pinned: true,
                   backgroundColor: Colors.white,
-                  expandedHeight: 300,
+                  expandedHeight: 310,
                   flexibleSpace: FlexibleSpaceBar(
                     background: Image.network(
                       productDoc['image'],
                       width: double.maxFinite,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),

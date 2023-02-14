@@ -28,7 +28,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   badges: ^2.0.3
-  bloc: ^8.1.1
+ 
   cloud_firestore: ^4.3.1
   completer_ex: ^3.0.0
   connectivity_plus: ^2.3.6+1

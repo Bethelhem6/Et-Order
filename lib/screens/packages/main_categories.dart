@@ -60,13 +60,13 @@ class _MainCategoryState extends State<MainCategory> {
                   right: 0,
                   child: Container(
                     width: double.maxFinite,
-                    height: 250,
+                    height: 300,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                           image: NetworkImage(
                             productDoc['image'],
                           ),
-                          fit: BoxFit.cover),
+                          fit: BoxFit.fitWidth),
                     ),
                   ),
                 ),
@@ -86,7 +86,7 @@ class _MainCategoryState extends State<MainCategory> {
                               backgroundColor: Colors.greenAccent,
                             )),
                         Consumer<CartProvider>(builder: (context, cp, _) {
-                          return  badges.Badge(
+                          return badges.Badge(
                             toAnimate: true,
                             shape: BadgeShape.circle,
                             // borderRadius: BorderRadius.circular(5),
@@ -120,7 +120,7 @@ class _MainCategoryState extends State<MainCategory> {
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  top: 220,
+                  top: 270,
                   child: Container(
                     padding:
                         const EdgeInsets.only(left: 20, right: 20, top: 20),

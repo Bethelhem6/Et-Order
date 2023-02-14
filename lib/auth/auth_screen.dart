@@ -1,5 +1,6 @@
 import 'package:demo_project/screens/home/main_page.dart';
 import 'package:demo_project/screens/login/login_page.dart';
+import 'package:demo_project/screens/welcome_screen.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class AuthStateScreen extends StatelessWidget {
         } else if (snapshot.hasError) {
           return const Text('Error Occured');
         }
-        return const MainPage();
+        return const WelcomeScreen();
       },
     );
   }

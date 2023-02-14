@@ -263,6 +263,24 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                             ),
                                           )
                                         : const Text(""),
+                                    collection == "canceled orders"
+                                        ? MaterialButton(
+                                            onPressed: () {
+                                              reOrder(
+                                                  orderId: documents[index]
+                                                      ['orderId']);
+                                            },
+                                            color: Colors.orange.shade500,
+                                            child: const Text(
+                                              "Reorder",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          )
+                                        : const Text(""),
                                     TextButton(
                                       onPressed: () {},
                                       child: Text(
@@ -334,6 +352,47 @@ void cancleOrder({required orderId}) async {
     });
     await FirebaseFirestore.instance
         .collection("processing orders")
+        .doc(orderId)
+        .delete();
+    print("deleted");
+  } catch (e) {
+    print(e);
+  }
+}
+
+void reOrder({required orderId}) async {
+  var doc = await FirebaseFirestore.instance
+      .collection("canceled orders")
+      .doc(orderId)
+      .get();
+
+  try {
+    await FirebaseFirestore.instance
+        .collection('processing orders')
+        .doc(orderId)
+        .set({
+      "customer information": {
+        'userId': doc["customer information"]["userId"],
+        'name': doc["customer information"]["name"],
+        'email': doc["customer information"]["email"],
+        'phoneNumber': doc["customer information"]["phoneNomber"],
+      },
+      "delivery information": {
+        'city': doc["delivery information"]["city"],
+        'subCity': doc["delivery information"]["subCity"],
+        'street': doc["delivery information"]["street"],
+      },
+      "ordered products": doc["ordered products"],
+      "TotalPricewithDelivery": doc["TotalPricewithDelivery"],
+      "deliveryFee": doc["deliveryFee"],
+      "subtotal": doc["subtotal"],
+      "orderData": doc["orderData"],
+      "orderId": doc["orderId"],
+      'name': doc["name"],
+      'status': "processing"
+    });
+    await FirebaseFirestore.instance
+        .collection("canceled orders")
         .doc(orderId)
         .delete();
     print("deleted");

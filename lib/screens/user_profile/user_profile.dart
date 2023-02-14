@@ -39,8 +39,10 @@ class _UserScreenState extends State<UserScreen> {
     User? user = _auth.currentUser;
     _uid = user!.uid;
 
-    final DocumentSnapshot userDocs =
-        await FirebaseFirestore.instance.collection('customers').doc(_uid).get();
+    final DocumentSnapshot userDocs = await FirebaseFirestore.instance
+        .collection('customers')
+        .doc(_uid)
+        .get();
 
     _name = userDocs.get('name');
     _email = userDocs.get('email');
@@ -164,43 +166,6 @@ class _UserScreenState extends State<UserScreen> {
                         ),
                       ),
 
-                      // User Settings
-                      const _userTileHeightSpace(height: 15),
-                      const _userTileText(text: 'User Settings'),
-                      const _userTileHeightSpace(height: 10),
-
-                      _userListTile(
-                        lIcon: Icons.power_settings_new,
-                        color: Colors.red,
-                        title: 'Logout',
-                        onTap: () async {
-
-                        
-                          await _auth.signOut();
-                          Navigator.pop(context);
-                          // Navigator.pop(context);
-
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Login()));
-                          // print("loggedout");
-                        },
-                      ),
-
-                      _userListTile(
-                        lIcon: Icons.edit,
-                        color: Colors.purple,
-                        title: 'Change Password',
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) =>
-                                      const ChangePassword())));
-                        },
-                      ),
-
                       // User Information
                       const _userTileHeightSpace(height: 15),
                       const _userTileText(text: 'User Information'),
@@ -226,6 +191,41 @@ class _UserScreenState extends State<UserScreen> {
                         title: 'Join Date',
                         subTitle: _joinedAt,
                       ),
+                      // User Settings
+                      const _userTileHeightSpace(height: 15),
+                      const _userTileText(text: 'User Settings'),
+                      const _userTileHeightSpace(height: 10),
+
+                      _userListTile(
+                        lIcon: Icons.edit,
+                        color: Colors.purple,
+                        title: 'Change Password',
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) =>
+                                      const ChangePassword())));
+                        },
+                      ),
+
+                      _userListTile(
+                        lIcon: Icons.power_settings_new,
+                        color: Colors.red,
+                        title: 'Logout',
+                        onTap: () async {
+                          await _auth.signOut();
+                          Navigator.pop(context);
+                          // Navigator.pop(context);
+
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Login()));
+                          // print("loggedout");
+                        },
+                      ),
+
                       const _userTileText(text: 'About Company'),
                       GestureDetector(
                         onTap: () {

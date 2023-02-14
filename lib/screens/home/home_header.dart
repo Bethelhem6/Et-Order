@@ -128,7 +128,39 @@ class _HomeHeaderState extends State<HomeHeader> {
                 ),
               ),
             ),
-             
+          
+            ListTile(
+              leading: const Icon(Icons.shopping_cart, color: Colors.green),
+              title: const Text(
+                ' My Orders ',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => const MyOrdersScreen())));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.favorite, color: Colors.red),
+              title: const Text(
+                ' Wishlists ',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => const WhishlistPage())));
+                // Navigator.pop(context);
+              },
+            ),
+            const Divider(
+              height: 5,
+              color: Colors.green,
+            ),
+               
             ListTile(
               leading: const Icon(Icons.person, color: Colors.blue),
               title: const Text(
@@ -158,37 +190,6 @@ class _HomeHeaderState extends State<HomeHeader> {
                   ),
                 );
                 Navigator.pop(context);
-              },
-            ),
-            const Divider(
-              height: 5,
-              color: Colors.green,
-            ),
-            ListTile(
-              leading: const Icon(Icons.shopping_cart, color: Colors.green),
-              title: const Text(
-                ' My Orders ',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) => const MyOrdersScreen())));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.favorite, color: Colors.red),
-              title: const Text(
-                ' Wishlists ',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) => const WhishlistPage())));
-                // Navigator.pop(context);
               },
             ),
             const Divider(
