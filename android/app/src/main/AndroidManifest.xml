@@ -2,7 +2,7 @@
     package="com.example.demo_project">
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
    <application
-        android:label="BJ Etherbal"
+        android:label="ET Order"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.AIzaSyCpzBtCXdl3Tl2WrlMW0raHm1WEp9dKTO0"
