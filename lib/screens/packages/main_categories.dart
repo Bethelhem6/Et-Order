@@ -60,13 +60,13 @@ class _MainCategoryState extends State<MainCategory> {
                   right: 0,
                   child: Container(
                     width: double.maxFinite,
-                    height: 300,
+                    height: 270,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                           image: NetworkImage(
                             productDoc['image'],
                           ),
-                          fit: BoxFit.fitWidth),
+                          ),
                     ),
                   ),
                 ),
